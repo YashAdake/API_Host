@@ -1,0 +1,4529 @@
+openapi: 3.0.3
+
+info:
+  title: All API Combined
+  description: |
+   UI representation of All APIs Used 
+  version: 1.0.0
+  
+servers:
+- url: https://arthaleap.arthavedh.com
+- url: https://dev-arthaleap.cloudjiffy.net
+- url: https://arthavedh.com:6542
+- url: http://localhost:8080
+
+security:
+  - BasicAuth: []
+
+
+tags:
+  - name: Login API
+    description: Login through OPT
+  - name: OTP Validation
+    description: To validate OTP
+  - name: Menu Sub-Menu Access API
+    description: To access Menu Sub-Menu
+  - name: Fetch-Lead-Case
+    description: To fetch different different cases
+  - name: Fetch-Loan-Application-Case
+    description: To fetch loan aaplications of different cases
+  - name: Fetch-Loan-Application-Audit
+    description: for loan application audit
+  - name: Claim-Case
+    description: for Claiming case
+  - name: Entity Lists
+    description: Operation to view different Entity lists.
+  - name: Entity Details
+    description: Operation to view different Entity details.
+  - name: Assign User
+    description: To Assign User
+  - name: Fetch Action and Respone
+    description: To Fetch Action and Respone
+  - name: Fetch Lead
+    description: To Fetch Lead
+  - name: Fetch Loan Application Details
+    description: To Fetch Loan Application Details
+  - name: Fetch System User IDs Generic
+    description: To Fetch System User IDs
+  - name: Role Reassigned
+    description: To Assign Reassigned Role
+  - name: Reassign User
+    description: To Assign Reassign User
+  - name: Release Case
+    description: To Release Case
+  - name: Send Link
+    description: To Send Link
+  - name: Update case
+    description: To Update case
+  
+
+paths:
+  /ops/user-login:
+    post:
+      tags:
+        - Login API
+      summary: Login Summary
+      description: Login description
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/payload-login"
+      
+            examples:
+              exampleId:
+                value:
+                  id: "1001"
+                  
+      responses:
+        '200':
+            description: login success description
+            content:
+              Application/json:
+                schema:
+                  $ref: "#/components/schemas/successResponse-LoginAPI"
+                examples:
+                  successfulLogin:
+                    value:
+                      businessStatusCode: 2
+                      emailId: shubham.n@arthavedh.com
+                      httpResponseCode: 200
+                      message: OTP has been sent
+                      message1: "Login Successful, Welcome Shubham Navle STC"
+                      name: Shubham Navle STC
+                      roleId: SALES_TELECALLER
+                      userId: "1001"
+                      
+        '400':
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 400
+                message: "bad request"
+        '401':
+          description: Unauthorized error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 401
+                message: "unauthorized user"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 500
+                message: "internal server error"
+                
+                
+  /ops/user-otp-validation:
+    post:
+      tags:
+        - OTP Validation
+      description: For OTP Validation
+      requestBody:
+        required: true
+        content:
+          Application/json:
+            schema:
+              $ref: '#/components/schemas/payload-OTPValidation'
+              
+            examples:
+              exampleOTP:
+                value:
+                  otp: "84152"
+      responses:
+        '200':
+          description: "Successful OTP validation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/successResponse-OTPValidation"
+                
+              examples:
+                SuccsessfulValidation:
+                  value:
+                    message: OTP has been validated
+                    businessStatusCode: 2
+                    httpResponseCode: 200
+                    
+        '400':
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 400
+                message: "bad request"
+        '401':
+          description: Unauthorized error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 401
+                message: "unauthorized user"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 500
+                message: "internal server error"
+                
+                
+  /ops/ref-data/menu-submenu-accsess:
+    get:
+      tags:
+        - Menu Sub-Menu Access API
+      description: To get menu submenu accsess
+      responses:
+        '200':
+          description: successful Menu Submenu Accsess
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse-menuSubmenuAccsess'
+              examples:
+                successfulMenuSubmenuAccsess:
+                  value:
+                    businessStatusCode: 2
+                    buttons:
+                      - resource_id: "100"
+                        resource_alias: Dashboard
+                        resource_type: Menu
+                      - resource_id: "200"
+                        resource_alias: Case Management
+                        resource_type: Menu
+                      - resource_id: "201"
+                        resource_alias: Lead Cases
+                        parent_resource_id: "200"
+                        resource_type: Sub-menu
+                      - resource_id: "202"
+                        resource_alias: Loan Application Cases
+                        parent_resource_id: "200"
+                        resource_type: Sub-menu
+                      - resource_id: "300"
+                        resource_alias: System Data
+                        resource_type: Menu
+                      - resource_id: "301"
+                        resource_alias: Pincode Master
+                        parent_resource_id: "300"
+                        resource_type: Sub-menu
+                      - resource_id: "302"
+                        resource_alias: Resource Master
+                        parent_resource_id: "300"
+                        resource_type: Sub-menu
+                      - resource_id: "303"
+                        resource_alias: Attribute Master
+                        parent_resource_id: "300"
+                        resource_type: Sub-menu
+                    httpResponseCode: 200
+  
+                
+        
+        '400':
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 400
+                message: "bad request"
+        '401':
+          description: Unauthorized error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 401
+                message: "unauthorized user"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 500
+                message: "internal server error"            
+                  
+
+
+
+  /ops/fetch-lead-cases:
+    post:
+      tags: 
+      - Fetch-Lead-Case
+      summary: "Fetching lead cases"
+      description: "It is used to get Unassigned, Assigned and specific lead case"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/payload-common"
+              
+            examples:
+              Fetch Unassigned Lead Cases:
+                value:
+                  pagenumber: 1
+                  parameter:
+                    - columnName: "case_details.assigned_to_user_id"
+                      condition: "IS"
+                      value: "NULL"
+              Fetch Aassigned Lead Cases:
+                value:
+                  pagenumber: 1
+                  parameter:
+                    - columnName: "case_details.assigned_to_user_id"
+                      condition: "IS"
+                      value: "NOT NULL"
+              Fetch Your Lead Cases:
+                value:
+                  pagenumber: 1
+                  parameter:
+                    - columnName: "case_details.assigned_to_user_id"
+                      condition: "="
+                      value: "1001"
+      
+      responses:
+        '200':
+          description: Succsess
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/succsessResponse-LeadCase'
+                  
+              examples:
+                Fetch Unassigned Lead Cases:
+                  value:
+                    businessStatusCode: 2
+                    caseCount: 2
+                    currentIndex: 1
+                    httpResponseCode: 200
+                    leadCases:
+                      - CaseId: "7950b511-dc1e-4024-994d-faa93b0609f0"
+                        BranchCode: null
+                        CaseTriggerType: SCHEDULER
+                        AssociatedEntityId: "2c7ff26a-12ae-4375-b892-6fdbb875066c"
+                        AssociatedEntityType: LEAD
+                        CaseStatus: FOLLOWUP_REGISTRATION_PENDING
+                        AssociatedEntityStatus: REGISTRATION_PENDING
+                        CaseStatusDescription: "Customer registration is not successful- follow-up scheduled with customer."
+                        FollowupDateTime: "2024-02-07T15:37:00Z"
+                        AdditionalInfo: null
+                        AssignedToRole: SALES_TELECALLER
+                        AssignedToUserId: null
+                        AssignedToUserName: null
+                        ShowOnDashboard: null
+                        AttachmentType: null
+                        Attachment: null
+                        LenderId: null
+                        ClusterCode: null
+                        AreaCode: null
+                        RegionCode: null
+                        AssociatedBranchCode: null
+                        AssociatedRegionCode: null
+                        AssociatedClusterCode: null
+                        AssociatedAreaCode: null
+                        AssociatedLenderId: null
+                        LeadId: "2c7ff26a-12ae-4375-b892-6fdbb875066c"
+                        PAN: "CGEPN9253Q"
+                        Mobile: "7517513488"
+                        Status: REGISTERED
+                        Description: "User is successfully Registered"
+                        
+                      - CaseId: "69febc8f-2bab-49cc-877f-33854dd594b8"
+                        BranchCode: null
+                        CaseTriggerType: SCHEDULER
+                        AssociatedEntityId: "2c7ff26a-12ae-4375-b892-6fdbb875066c"
+                        AssociatedEntityType: LEAD
+                        CaseStatus: FOLLOWUP_REGISTRATION_PENDING
+                        AssociatedEntityStatus: REGISTRATION_PENDING
+                        CaseStatusDescription: "Customer registration is not successful- follow-up scheduled with customer."
+                        FollowupDateTime: "2024-02-01T01:24:00Z"
+                        AdditionalInfo: null
+                        AssignedToRole: SALES_TELECALLER
+                        AssignedToUserId: null
+                        AssignedToUserName: null
+                        ShowOnDashboard: null
+                        AttachmentType: null
+                        Attachment: null
+                        LenderId: null
+                        ClusterCode: null
+                        AreaCode: null
+                        RegionCode: null
+                        AssociatedBranchCode: null
+                        AssociatedRegionCode: null
+                        AssociatedClusterCode: null
+                        AssociatedAreaCode: null
+                        AssociatedLenderId: null
+                        LeadId: "2c7ff26a-12ae-4375-b892-6fdbb875066c"
+                        PAN: "CGEPN9253Q"
+                        Mobile: "7517513488"
+                        Status: REGISTERED
+                        Description: "User is successfully Registered"
+                    totalCases: 2
+                    totalPages: 1
+                Fetch Assigned Lead Cases:
+                  value:
+                    businessStatusCode: 2
+                    caseCount: 2
+                    currentIndex: 1
+                    httpResponseCode: 200
+                    leadCases:
+                      - CaseId: "7950b511-dc1e-4024-994d-faa93b0609f0"
+                        BranchCode: null
+                        CaseTriggerType: SCHEDULER
+                        AssociatedEntityId: "2c7ff26a-12ae-4375-b892-6fdbb875066c"
+                        AssociatedEntityType: LEAD
+                        CaseStatus: FOLLOWUP_REGISTRATION_PENDING
+                        AssociatedEntityStatus: REGISTRATION_PENDING
+                        CaseStatusDescription: "Customer registration is not successful- follow-up scheduled with customer."
+                        FollowupDateTime: "2024-02-07T15:37:00Z"
+                        AdditionalInfo: null
+                        AssignedToRole: SALES_TELECALLER
+                        AssignedToUserId: 1001
+                        AssignedToUserName: Suresh Patil
+                        ShowOnDashboard: null
+                        AttachmentType: null
+                        Attachment: null
+                        LenderId: null
+                        ClusterCode: null
+                        AreaCode: null
+                        RegionCode: null
+                        AssociatedBranchCode: null
+                        AssociatedRegionCode: null
+                        AssociatedClusterCode: null
+                        AssociatedAreaCode: null
+                        AssociatedLenderId: null
+                        LeadId: "2c7ff26a-12ae-4375-b892-6fdbb875066c"
+                        PAN: "CGEPN9253Q"
+                        Mobile: "7517513488"
+                        Status: REGISTERED
+                        Description: "User is successfully Registered"
+                        
+                      - CaseId: "69febc8f-2bab-49cc-877f-33854dd594b8"
+                        BranchCode: null
+                        CaseTriggerType: SCHEDULER
+                        AssociatedEntityId: "2c7ff26a-12ae-4375-b892-6fdbb875066c"
+                        AssociatedEntityType: LEAD
+                        CaseStatus: FOLLOWUP_REGISTRATION_PENDING
+                        AssociatedEntityStatus: REGISTRATION_PENDING
+                        CaseStatusDescription: "Customer registration is not successful- follow-up scheduled with customer."
+                        FollowupDateTime: "2024-02-01T01:24:00Z"
+                        AdditionalInfo: null
+                        AssignedToRole: SALES_TELECALLER
+                        AssignedToUserId: PRASHANT01
+                        AssignedToUserName: Prashant Shinde
+                        ShowOnDashboard: null
+                        AttachmentType: null
+                        Attachment: null
+                        LenderId: null
+                        ClusterCode: null
+                        AreaCode: null
+                        RegionCode: null
+                        AssociatedBranchCode: null
+                        AssociatedRegionCode: null
+                        AssociatedClusterCode: null
+                        AssociatedAreaCode: null
+                        AssociatedLenderId: null
+                        LeadId: "2c7ff26a-12ae-4375-b892-6fdbb875066c"
+                        PAN: "CGEPN9253Q"
+                        Mobile: "7517513488"
+                        Status: REGISTERED
+                        Description: "User is successfully Registered"
+                    totalCases: 2
+                    totalPages: 1  
+        
+                Fetch Your Lead Cases:
+                  value:
+                    businessStatusCode: 2
+                    caseCount: 2
+                    currentIndex: 1
+                    httpResponseCode: 200
+                    leadCases:
+                      - CaseId: "7950b511-dc1e-4024-994d-faa93b0609f0"
+                        BranchCode: null
+                        CaseTriggerType: SCHEDULER
+                        AssociatedEntityId: "2c7ff26a-12ae-4375-b892-6fdbb875066c"
+                        AssociatedEntityType: LEAD
+                        CaseStatus: FOLLOWUP_REGISTRATION_PENDING
+                        AssociatedEntityStatus: REGISTRATION_PENDING
+                        CaseStatusDescription: "Customer registration is not successful- follow-up scheduled with customer."
+                        FollowupDateTime: "2024-02-07T15:37:00Z"
+                        AdditionalInfo: null
+                        AssignedToRole: SALES_TELECALLER
+                        AssignedToUserId: 1001
+                        AssignedToUserName: Suresh Patil
+                        ShowOnDashboard: null
+                        AttachmentType: null
+                        Attachment: null
+                        LenderId: null
+                        ClusterCode: null
+                        AreaCode: null
+                        RegionCode: null
+                        AssociatedBranchCode: null
+                        AssociatedRegionCode: null
+                        AssociatedClusterCode: null
+                        AssociatedAreaCode: null
+                        AssociatedLenderId: null
+                        LeadId: "2c7ff26a-12ae-4375-b892-6fdbb875066c"
+                        PAN: "CGEPN9253Q"
+                        Mobile: "7517513488"
+                        Status: REGISTERED
+                        Description: "User is successfully Registered"
+                        
+                      - CaseId: "69febc8f-2bab-49cc-877f-33854dd594b8"
+                        BranchCode: null
+                        CaseTriggerType: SCHEDULER
+                        AssociatedEntityId: "2c7ff26a-12ae-4375-b892-6fdbb875066c"
+                        AssociatedEntityType: LEAD
+                        CaseStatus: FOLLOWUP_REGISTRATION_PENDING
+                        AssociatedEntityStatus: REGISTRATION_PENDING
+                        CaseStatusDescription: "Customer registration is not successful- follow-up scheduled with customer."
+                        FollowupDateTime: "2024-02-01T01:24:00Z"
+                        AdditionalInfo: null
+                        AssignedToRole: SALES_TELECALLER
+                        AssignedToUserId: 1001
+                        AssignedToUserName: Suresh Patil
+                        ShowOnDashboard: null
+                        AttachmentType: null
+                        Attachment: null
+                        LenderId: null
+                        ClusterCode: null
+                        AreaCode: null
+                        RegionCode: null
+                        AssociatedBranchCode: null
+                        AssociatedRegionCode: null
+                        AssociatedClusterCode: null
+                        AssociatedAreaCode: null
+                        AssociatedLenderId: null
+                        LeadId: "2c7ff26a-12ae-4375-b892-6fdbb875066c"
+                        PAN: "CGEPN9253Q"
+                        Mobile: "7517513488"
+                        Status: REGISTERED
+                        Description: "User is successfully Registered"
+                    totalCases: 2
+                    totalPages: 1    
+                        
+        
+                        
+
+      
+        '400':
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 400
+                message: "bad request"
+        '401':
+          description: Unauthorized error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 401
+                message: "unauthorized user"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 500
+                message: "internal server error"
+                
+                
+  /ops/fetch-loan-application-cases:
+    post:
+      tags:
+        - Fetch-Loan-Application-Case
+      summary: "Fetching loan application cases"
+      description: "It is used to get Unassigned, Assigned and specific Loan application"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/payload-common"
+              
+            examples:
+              Fetch Unassigned Loan Application Cases:
+                value:
+                  pagenumber: 1
+                  parameter:
+                    - columnName: "case_details.assigned_to_user_id"
+                      condition: "IS"
+                      value: "NULL"
+              Fetch Aassigned Loan Application Cases:
+                value:
+                  pagenumber: 1
+                  parameter:
+                    - columnName: "case_details.assigned_to_user_id"
+                      condition: "IS"
+                      value: "NOT NULL"
+              Fetch Your Loan Application Cases:
+                value:
+                  pagenumber: 1
+                  parameter:
+                    - columnName: "case_details.assigned_to_user_id"
+                      condition: "="
+                      value: "5002"
+      
+      responses:
+        '200':
+          description: Succsess
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/succsessResponse-LoanApplication'
+                  
+              examples:
+                Fetch Unassigned Loan Application Cases:
+                  value:
+                    businessStatusCode: 2
+                    caseCount: 2
+                    currentIndex: 1
+                    httpResponseCode: 200
+                    loanApplicationCases:
+                      - CaseId: e8ebc63e-da6e-480e-91e7-ac2c7678fc59
+                        BranchCode: L1B001
+                        CaseTriggerType: SCHEDULER
+                        AssociatedEntityId: 47cf4134-55ce-4a06-a40d-cae998032b70
+                        AssociatedEntityType: LOAN_APPLICATION
+                        CaseStatus: KYC_DETAILS
+                        AssociatedEntityStatus: KYC_DETAILS
+                        CaseStatusDescription: Ckyc Succeeded
+                        UpdatedDateAndTime: "2024-03-05T11:52:44.841608Z"
+                        FollowupDateTime: "2024-02-12T23:30:00.145Z"
+                        AdditionalInfo: null
+                        AssignedToRole: SALES_TELECALLER
+                        AssignedToUserId: null
+                        AssignedToUserName: null
+                        ShowOnDashboard: null
+                        AttachmentType: null
+                        Attachment: null
+                        LenderId: L1
+                        ClusterCode: L1C001
+                        AreaCode: L1A001
+                        RegionCode: L1R001
+                        AssociatedBranchCode: null
+                        AssociatedRegionCode: null
+                        AssociatedClusterCode: null
+                        AssociatedAreaCode: null
+                        AssociatedLenderId: L1
+                        LoanAppId: 47cf4134-55ce-4a06-a40d-cae998032b70
+                        LoanAmount: "268000.00"
+                        LoanType: Personal Loan
+                        LoanSubType: null
+                        LoanTenure: "24"
+                        LoanAppIdExternal: FL00001PL00001
+                      - CaseId: e8ebc63e-da6e-480e-91e7-ac2c7678fc90
+                        BranchCode: L1B001
+                        CaseTriggerType: SCHEDULER
+                        AssociatedEntityId: 47cf4134-55ce-4a06-a40d-cae998032b70
+                        AssociatedEntityType: LOAN_APPLICATION
+                        CaseStatus: KYC_DETAILS
+                        AssociatedEntityStatus: KYC_DETAILS
+                        CaseStatusDescription: Ckyc Succeeded
+                        UpdatedDateAndTime: "2024-03-05T11:52:44.841608Z"
+                        FollowupDateTime: "2024-02-12T23:30:00.145Z"
+                        AdditionalInfo: null
+                        AssignedToRole: SALES_TELECALLER
+                        AssignedToUserId: null
+                        AssignedToUserName: null
+                        ShowOnDashboard: null
+                        AttachmentType: null
+                        Attachment: null
+                        LenderId: L1
+                        ClusterCode: L1C001
+                        AreaCode: L1A001
+                        RegionCode: L1R001
+                        AssociatedBranchCode: null
+                        AssociatedRegionCode: null
+                        AssociatedClusterCode: null
+                        AssociatedAreaCode: null
+                        AssociatedLenderId: L1
+                        LoanAppId: 47cf4134-55ce-4a06-a40d-cae998032b70
+                        LoanAmount: "268000.00"
+                        LoanType: Personal Loan
+                        LoanSubType: null
+                        LoanTenure: "24"
+                        LoanAppIdExternal: FL00001PL00001
+                    totalCases: 2
+                    totalPages: 1
+
+                Fetch Assigned Loan Application Cases:
+                  value:
+                    businessStatusCode: 2
+                    caseCount: 2
+                    currentIndex: 1
+                    httpResponseCode: 200
+                    loanApplicationCases:
+                      - CaseId: e8ebc63e-da6e-480e-91e7-ac2c7678fc59
+                        BranchCode: L1B001
+                        CaseTriggerType: SCHEDULER
+                        AssociatedEntityId: 47cf4134-55ce-4a06-a40d-cae998032b70
+                        AssociatedEntityType: LOAN_APPLICATION
+                        CaseStatus: KYC_DETAILS
+                        AssociatedEntityStatus: KYC_DETAILS
+                        CaseStatusDescription: Ckyc Succeeded
+                        UpdatedDateAndTime: "2024-03-05T11:52:44.841608Z"
+                        FollowupDateTime: "2024-02-12T23:30:00.145Z"
+                        AdditionalInfo: null
+                        AssignedToRole: SALES_TELECALLER
+                        AssignedToUserId: 2001
+                        AssignedToUserName: Sagar Patil
+                        ShowOnDashboard: null
+                        AttachmentType: null
+                        Attachment: null
+                        LenderId: L1
+                        ClusterCode: L1C001
+                        AreaCode: L1A001
+                        RegionCode: L1R001
+                        AssociatedBranchCode: null
+                        AssociatedRegionCode: null
+                        AssociatedClusterCode: null
+                        AssociatedAreaCode: null
+                        AssociatedLenderId: L1
+                        LoanAppId: 47cf4134-55ce-4a06-a40d-cae998032b70
+                        LoanAmount: "268000.00"
+                        LoanType: Personal Loan
+                        LoanSubType: null
+                        LoanTenure: "24"
+                        LoanAppIdExternal: FL00001PL00001
+                      - CaseId: e8ebc63e-da6e-480e-91e7-ac2c7678fc90
+                        BranchCode: L1B001
+                        CaseTriggerType: SCHEDULER
+                        AssociatedEntityId: 47cf4134-55ce-4a06-a40d-cae998032b70
+                        AssociatedEntityType: LOAN_APPLICATION
+                        CaseStatus: KYC_DETAILS
+                        AssociatedEntityStatus: KYC_DETAILS
+                        CaseStatusDescription: Ckyc Succeeded
+                        UpdatedDateAndTime: "2024-03-05T11:52:44.841608Z"
+                        FollowupDateTime: "2024-02-12T23:30:00.145Z"
+                        AdditionalInfo: null
+                        AssignedToRole: SALES_TELECALLER
+                        AssignedToUserId: 5002
+                        AssignedToUserName: Ravindra Patil
+                        ShowOnDashboard: null
+                        AttachmentType: null
+                        Attachment: null
+                        LenderId: L1
+                        ClusterCode: L1C001
+                        AreaCode: L1A001
+                        RegionCode: L1R001
+                        AssociatedBranchCode: null
+                        AssociatedRegionCode: null
+                        AssociatedClusterCode: null
+                        AssociatedAreaCode: null
+                        AssociatedLenderId: L1
+                        LoanAppId: 47cf4134-55ce-4a06-a40d-cae998032b70
+                        LoanAmount: "268000.00"
+                        LoanType: Personal Loan
+                        LoanSubType: null
+                        LoanTenure: "24"
+                        LoanAppIdExternal: FL00001PL00001
+                    totalCases: 2
+                    totalPages: 1  
+        
+                Fetch Your Loan Application Cases:
+                  value:
+                    businessStatusCode: 2
+                    caseCount: 2
+                    currentIndex: 1
+                    httpResponseCode: 200
+                    loanApplicationCases:
+                      - CaseId: e8ebc63e-da6e-480e-91e7-ac2c7678fc59
+                        BranchCode: L1B001
+                        CaseTriggerType: SCHEDULER
+                        AssociatedEntityId: 47cf4134-55ce-4a06-a40d-cae998032b70
+                        AssociatedEntityType: LOAN_APPLICATION
+                        CaseStatus: KYC_DETAILS
+                        AssociatedEntityStatus: KYC_DETAILS
+                        CaseStatusDescription: Ckyc Succeeded
+                        UpdatedDateAndTime: "2024-03-05T11:52:44.841608Z"
+                        FollowupDateTime: "2024-02-12T23:30:00.145Z"
+                        AdditionalInfo: null
+                        AssignedToRole: SALES_TELECALLER
+                        AssignedToUserId: 5002
+                        AssignedToUserName: Ravindra Patil
+                        ShowOnDashboard: null
+                        AttachmentType: null
+                        Attachment: null
+                        LenderId: L1
+                        ClusterCode: L1C001
+                        AreaCode: L1A001
+                        RegionCode: L1R001
+                        AssociatedBranchCode: null
+                        AssociatedRegionCode: null
+                        AssociatedClusterCode: null
+                        AssociatedAreaCode: null
+                        AssociatedLenderId: L1
+                        LoanAppId: 47cf4134-55ce-4a06-a40d-cae998032b70
+                        LoanAmount: "268000.00"
+                        LoanType: Personal Loan
+                        LoanSubType: null
+                        LoanTenure: "24"
+                        LoanAppIdExternal: FL00001PL00001
+                    totalCases: 1
+                    totalPages: 1    
+                        
+        
+                        
+
+      
+        '400':
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 400
+                message: "bad request"
+        '401':
+          description: Unauthorized error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 401
+                message: "unauthorized user"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 500
+                message: "internal server error"
+  
+  
+  /ops/fetch-loan-application_audit:
+    post:
+      tags:
+        - Fetch-Loan-Application-Audit
+      summary: "Fetching loan application audit"
+      description: "It is used to get Loan application audit"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/payload-common"             
+            examples:
+              Fetch loan application audits:
+                value:
+                  pagenumber: 1
+                  parameter:
+                    - columnName: "loan_application_audit.external_loan_app_id"
+                      condition: "="
+                      value: "FL00001PL00001"
+              
+      
+      responses:
+        '200':
+          description: Succsess
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/succsessResponse-LoanApplicationAudit'
+                  
+              examples:
+                Fetch Your Loan Application audit:
+                  value:
+                    businessStatusCode: 2
+                    caseCount: 2
+                    currentIndex: 1
+                    httpResponseCode: 200
+                    loanApplicationAuditData:
+                      - auditId: "3baac675-90e3-4713-9ca5-337eea69701e"
+                        loanApplicationId: "47cf4134-55ce-4a06-a40d-cae998032b70"
+                        creationDateTime: "2024-02-15T12:08:34.100662Z"
+                        stage: "LOAN-APPLICATION-CREATION"
+                        description: "loan application created for user id 0d132d01-e996-4423-9aef-0243f9e0430d and ap id b4682a45-99a0-4a63-bc4a-c854064eb22f"
+                        externalLoanAppId: "FL00001PL00001"
+                      - auditId: "f4189d68-fc36-4a53-8252-812a5c55f698"
+                        loanApplicationId: "47cf4134-55ce-4a06-a40d-cae998032b70"
+                        creationDateTime: "2024-02-15T12:09:00.694084Z"
+                        stage: "PINCODE-VALIDATION"
+                        description: "PinCode validation started"
+                        externalLoanAppId: "FL00001PL00001"
+                    totalCases: 2
+                    totalPages: 1
+              
+
+      
+        '400':
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 400
+                message: "bad request"
+        '401':
+          description: Unauthorized error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 401
+                message: "unauthorized user"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 500
+                message: "internal server error" 
+                
+
+  /ops/claim-case:
+    post:
+      tags:
+        - Claim-Case
+      summary: "For claiming case"
+      description: "It is used claim case"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                case_id:
+                  type: string
+                  example: e8ebc63e-da6e-480e-91e7-ac2c7678fc78
+      
+      responses:
+        '200':
+          description: Succsess
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/CaseClaimedUnsuccsessful'
+                  - $ref: '#/components/schemas/CaseClaimedSuccsessful'
+                  
+              examples:
+                Case Claimed Unsuccsessful:
+                  value:
+                   businessStatusCode: 1
+                   httpResponseCode: 200
+                   message: 1001 is already working on this case!
+                   
+                Case Claimed Succsessful:
+                  value:
+                    businessStatusCode: 2
+                    buttons:
+                      - resource_id: "1003"
+                        status: Disable
+                        alias: Claim Case
+                        resource_action_group: ""
+                      - resource_id: "1004"
+                        status: Enable
+                        alias: Release Case
+                        resource_action_group: ""
+                      - resource_id: "1006"
+                        status: Enable
+                        alias: Update Case
+                        resource_action_group: ""
+                      - resource_id: "1005"
+                        status: Enable
+                        alias: Send Link
+                        resource_action_group: ""
+                      - resource_id: "1011"
+                        status: Enable
+                        alias: Reassign Role
+                        resource_action_group: ""
+                      - resource_id: "1160"
+                        status: Disable
+                        alias: ""
+                        resource_action_group: ""
+                    httpResponseCode: 200
+                    message: Case Claimed Successfully!
+
+              
+
+      
+        '400':
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 400
+                message: "bad request"
+        '401':
+          description: Unauthorized error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 401
+                message: "unauthorized user"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 500
+                message: "internal server error"
+
+  /ops/ref-data/view-entity-list:
+    post:
+      tags:
+        - Entity Lists
+      description: This operation can be used to view different Entities
+      requestBody:
+        required: true 
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/payload-ViewList'
+            
+            examples:
+              LenderViewList:
+                value:
+                  entity_list: lender
+                  pagenumber: 1
+                  parameter:
+                    - columnName: "lender.<COLUMN_NAME>"
+                      condition: "="
+                      value: string
+                      
+
+              LenderAssociationViewList:
+                value:
+                  entity_list: lenderAssociation
+                  pagenumber: 1
+                  parameter:
+                    - columnName: "lenderAssociation.<COLUMN_NAME>"
+                      condition: "="
+                      value: string
+              RegionViewList:
+                value:
+                  entity_list: region
+                  pagenumber: 1
+                  parameter:
+                    - columnName: "Region.<COLUMN_NAME>"
+                      condition: "="
+                      value: string
+              AreaViewList:
+                value:
+                  entity_list: area
+                  pagenumber: 1
+                  parameter:
+                    - columnName: "Area.<COLUMN_NAME>"
+                      condition: "="
+                      value: string
+              ClusterViewList:
+                value:
+                  entity_list: cluster
+                  pagenumber: 1
+                  parameter:
+                    - columnName: "cluster.<COLUMN_NAME>"
+                      condition: "="
+                      value: string
+              BranchViewList:
+                value:
+                  entity_list: branch
+                  pagenumber: 1
+                  parameter:
+                    - columnName: "branch.<COLUMN_NAME>"
+                      condition: "="
+                      value: string
+              BranchPincodeAssociationViewList:
+                value:
+                  entity_list: branchPincodeAssocition
+                  pagenumber: 1
+                  parameter:
+                    - columnName: "branchPincodeAssocition.<COLUMN_NAME>"
+                      condition: "="
+                      value: string    
+            
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/successResponse-LenderViewList'
+                  - $ref: '#/components/schemas/successResponse-LenderAssociationList'
+                  - $ref: '#/components/schemas/successResponse-RegionViewList'
+                  - $ref: '#/components/schemas/successResponse-AreaViewList'
+                  - $ref: '#/components/schemas/successResponse-ClusterViewList'
+                  - $ref: '#/components/schemas/successResponse-BranchViewList'
+                  - $ref: '#/components/schemas/successResponse-BranchPincodeAssociationViewList'
+
+              examples:
+                LenderViewList:
+                  value:
+                    businessStatusCode: 2
+                    buttons:
+                      - resource_id: "1109"
+                        status: Enable
+                        alias: ""
+                        resource_action_group: Create
+                    currentIndex: 1
+                    entityType: lender
+                    httpResponseCode: 200
+                    recordCount: 4
+                    totalPages: 1
+                    totalRecords: 4
+                    viewListData:
+                      - address_line_1: ABC towers, Main Road
+                        address_line_2: ABC towers, Main Road
+                        city: Pune
+                        district: PUNE
+                        effective_from_date: "2023-11-21T00:00:00Z"
+                        effective_to_date: null
+                        lender_description: Co-Lender1
+                        lender_id: A1
+                        lender_type: Co-Lender
+                        pending_status: null
+                        pincode: "411028"
+                        state: MAHARASHTRA
+                        status: ACTIVE
+                        user_id_format: XX
+                      - address_line_1: ABC towers, Main Road
+                        address_line_2: ABC towers, Main Road
+                        city: Pune
+                        district: PUNE
+                        effective_from_date: "2023-11-21T00:00:00Z"
+                        effective_to_date: null
+                        lender_description: Co-Lender2
+                        lender_id: A2
+                        lender_type: Co-Lender
+                        pending_status: null
+                        pincode: "400018"
+                        state: MAHARASHTRA
+                        status: ACTIVE
+                        user_id_format: YY
+                      - address_line_1: Central Building, Pune Camp
+                        address_line_2: Central Building, Pune Camp
+                        city: Pune
+                        district: PUNE
+                        effective_from_date: "2023-08-29T00:00:00Z"
+                        effective_to_date: "2024-08-29T00:00:00Z"
+                        lender_description: Finaleap
+                        lender_id: L42
+                        lender_type: Primary
+                        pending_status: PENDING
+                        pincode: "400134"
+                        state: MAHARASHTRA
+                        status: ACTIVE
+                        user_id_format: FL
+                      - address_line_1: Central Building, Pune Camp
+                        address_line_2: Central Building, Pune Camp
+                        city: Pune
+                        district: PUNE
+                        effective_from_date: "2023-08-29T00:00:00Z"
+                        effective_to_date: "2024-08-29T00:00:00Z"
+                        lender_description: Finaleap
+                        lender_id: L43
+                        lender_type: Primary
+                        pending_status: null
+                        pincode: "400134"
+                        state: MAHARASHTRA
+                        status: ACTIVE
+                        user_id_format: FL
+
+                LenderAssociationViewList:
+                  value:
+                    businessStatusCode: 2
+                    buttons:
+                      - resource_id: "1112"
+                        status: Enable
+                        alias: ""
+                        resource_action_group: Create
+                    currentIndex: 1
+                    entityType: lender_association
+                    httpResponseCode: 200
+                    recordCount: 4
+                    totalPages: 1
+                    totalRecords: 4
+                    viewListData:
+                      - associated_lender_id: A1
+                        associated_lender_name: Co-Lender2
+                        association_type: Co-Lender
+                        commission: ".015"
+                        effective_from_date: "2024-01-01T00:00:00Z"
+                        effective_to_date: null
+                        hurdle_rate: ".025"
+                        interest_rate: ".045"
+                        lender_association_id: LA1
+                        loan_type: Personal Loan
+                        login_fee_sharing: ".15"
+                        penalty_fee_sharing: ".08"
+                        pending_status: null
+                        primary_lender_id: A1
+                        primary_lender_name: FINALEAP
+                        priority: High
+                        processing_fee_sharing: ".4"
+                        status: Active
+                      - associated_lender_id: A2
+                        associated_lender_name: Co-Lender1
+                        association_type: Co-Lender
+                        commission: ".3"
+                        effective_from_date: "2024-02-26T00:00:00Z"
+                        effective_to_date: "2024-02-26T00:00:00Z"
+                        hurdle_rate: ".03"
+                        interest_rate: ".05"
+                        lender_association_id: LA2
+                        loan_type: Mortgage
+                        login_fee_sharing: ".1"
+                        penalty_fee_sharing: ".6"
+                        pending_status: null
+                        primary_lender_id: A1
+                        primary_lender_name: FINALEAP
+                        priority: Medium
+                        processing_fee_sharing: ".5"
+                        status: Active
+                      - associated_lender_id: A3
+                        associated_lender_name: Finaleap
+                        association_type: Primary
+                        commission: null
+                        effective_from_date: "2024-01-01T00:00:00Z"
+                        effective_to_date: "2024-12-31T00:00:00Z"
+                        hurdle_rate: null
+                        interest_rate: null
+                        lender_association_id: LA3
+                        loan_type: Personal Loan
+                        login_fee_sharing: null
+                        penalty_fee_sharing: null
+                        pending_status: null
+                        primary_lender_id: A1
+                        primary_lender_name: FINALEAP
+                        priority: null
+                        processing_fee_sharing: null
+                        status: Active
+                      - associated_lender_id: A4
+                        associated_lender_name: Co-Lender1
+                        association_type: Co-Lender
+                        commission: ".02"
+                        effective_from_date: "2024-01-01T00:00:00Z"
+                        effective_to_date: "2024-12-31T00:00:00Z"
+                        hurdle_rate: ".03"
+                        interest_rate: ".05"
+                        lender_association_id: LA4
+                        loan_type: Personal Loan
+                        login_fee_sharing: ".2"
+                        penalty_fee_sharing: ".1"
+                        pending_status: null
+                        primary_lender_id: A1
+                        primary_lender_name: FINALEAP
+                        priority: Medium
+                        processing_fee_sharing: ".5"
+                        status: Active
+
+                RegionViewList:
+                  value:
+                    businessStatusCode: 2
+                    buttons:
+                      - resource_id: "1115"
+                        status: Enable
+                        alias: ""
+                        resource_action_group: Create
+                    currentIndex: 1
+                    entityType: region
+                    httpResponseCode: 200
+                    recordCount: 6
+                    totalPages: 1
+                    totalRecords: 6
+                    viewListData:
+                      - effective_from_date: "2023-11-21T00:00:00Z"
+                        effective_to_date: null
+                        lender_id: null
+                        pending_status: null
+                        pincode: null
+                        region_description: India
+                        region_id: L1R001
+                        status: ACTIVE
+                      - effective_from_date: "2023-11-21T00:00:00Z"
+                        effective_to_date: null
+                        lender_id: null
+                        pending_status: null
+                        pincode: null
+                        region_description: India
+                        region_id: L2R001
+                        status: ACTIVE
+                      - effective_from_date: "2023-11-21T00:00:00Z"
+                        effective_to_date: null
+                        lender_id: null
+                        pending_status: null
+                        pincode: null
+                        region_description: India
+                        region_id: L3R001
+                        status: ACTIVE
+                      - effective_from_date: "2023-01-01T00:00:00Z"
+                        effective_to_date: "2024-12-31T00:00:00Z"
+                        lender_id: null
+                        pending_status: null
+                        pincode: Active
+                        region_description: India
+                        region_id: REGION6087
+                        status: ACTIVE
+                      - effective_from_date: "2023-01-01T00:00:00Z"
+                        effective_to_date: "2024-12-31T00:00:00Z"
+                        lender_id: L4
+                        pending_status: null
+                        pincode: Active
+                        region_description: India
+                        region_id: RG1
+                        status: ACTIVE
+                      - effective_from_date: "2023-01-01T00:00:00Z"
+                        effective_to_date: "2024-12-31T00:00:00Z"
+                        lender_id: L4
+                        pending_status: null
+                        pincode: "123457"
+                        region_description: India1
+                        region_id: REGION0282
+                        status: ACTIVE
+
+                AreaViewList:
+                  value:
+                    businessStatusCode: 2
+                    buttons:
+                      - resource_id: "1118"
+                        status: Enable
+                        alias: ""
+                        resource_action_group: Create
+                    currentIndex: 1
+                    entityType: area
+                    httpResponseCode: 200
+                    recordCount: 11
+                    totalPages: 1
+                    totalRecords: 11
+                    viewListData:
+                      - area_description: L1A001
+                        area_id: L1A001
+                        effective_from_date: "2023-11-21T00:00:00Z"
+                        effective_to_date: "2030-11-21T00:00:00Z"
+                        lender_id: null
+                        pending_status: null
+                        region_code: L1R001
+                        status: ACTIVE
+                      - area_description: L2A001
+                        area_id: L2A001
+                        effective_from_date: "2023-11-21T00:00:00Z"
+                        effective_to_date: "2030-11-21T00:00:00Z"
+                        lender_id: null
+                        pending_status: null
+                        region_code: L2R001
+                        status: ACTIVE
+                      - area_description: L3A001
+                        area_id: L3A001
+                        effective_from_date: "2023-11-21T00:00:00Z"
+                        effective_to_date: "2030-11-21T00:00:00Z"
+                        lender_id: null
+                        pending_status: null
+                        region_code: L3R001
+                        status: ACTIVE
+                      - area_description: L1A002
+                        area_id: L1A002
+                        effective_from_date: "2023-11-21T00:00:00Z"
+                        effective_to_date: "2030-11-21T00:00:00Z"
+                        lender_id: null
+                        pending_status: null
+                        region_code: L1R001
+                        status: ACTIVE
+                      - area_description: L1A003
+                        area_id: L1A003
+                        effective_from_date: "2023-11-21T00:00:00Z"
+                        effective_to_date: "2030-11-21T00:00:00Z"
+                        lender_id: null
+                        pending_status: null
+                        region_code: L1R001
+                        status: ACTIVE
+
+                ClusterViewList:
+                  value:
+                    businessStatusCode: 2
+                    buttons:
+                      - resource_id: "1121"
+                        status: Enable
+                        alias: ""
+                        resource_action_group: Create
+                    currentIndex: 1
+                    entityType: cluster
+                    httpResponseCode: 200
+                    recordCount: 20
+                    totalPages: 2
+                    totalRecords: 24
+                    viewListData:
+                      - area_id: AR1
+                        cluster_description: Cluster Description
+                        cluster_id: CL5
+                        effective_from_date: "2023-08-29T00:00:00Z"
+                        effective_to_date: "2024-08-29T00:00:00Z"
+                        lender_id: L43
+                        pending_status: PENDING
+                        status: NEW
+                      - area_id: AR1
+                        cluster_description: Cluster Description
+                        cluster_id: CL6
+                        effective_from_date: "2023-08-29T00:00:00Z"
+                        effective_to_date: "2024-08-29T00:00:00Z"
+                        lender_id: L43
+                        pending_status: PENDING
+                        status: NEW
+                      - area_id: AR1
+                        cluster_description: Cluster Description
+                        cluster_id: CL39
+                        effective_from_date: "2023-08-29T00:00:00Z"
+                        effective_to_date: "2024-08-29T00:00:00Z"
+                        lender_id: L43
+                        pending_status: PENDING
+                        status: NEW
+                      - area_id: AR1
+                        cluster_description: Cluster Description
+                        cluster_id: CL72
+                        effective_from_date: "2023-08-29T00:00:00Z"
+                        effective_to_date: "2024-08-29T00:00:00Z"
+                        lender_id: L43
+                        pending_status: PENDING
+                        status: NEW
+                      - area_id: AR1
+                        cluster_description: Cluster Description
+                        cluster_id: CL107
+                        effective_from_date: "2023-08-29T00:00:00Z"
+                        effective_to_date: "2024-08-29T00:00:00Z"
+                        lender_id: L43
+                        pending_status: PENDING
+                        status: NEW
+
+                BranchViewList:
+                  value:
+                    businessStatusCode: 2
+                    buttons:
+                      - resource_id: "1124"
+                        status: Enable
+                        alias: ""
+                        resource_action_group: Create
+                    currentIndex: 1
+                    entityType: branch
+                    httpResponseCode: 200
+                    recordCount: 4
+                    totalPages: 1
+                    totalRecords: 4
+                    viewListData:
+                      - address_line_1: Central Building, Pune Camp
+                        address_line_2: Central Building, Pune Camp
+                        address_line_3: null
+                        area_id: null
+                        branch_description: Pune Station
+                        branch_id: L1B001
+                        city: Pune
+                        cluster_id: L1C001
+                        district: PUNE
+                        effective_from_date: "2023-11-21T00:00:00Z"
+                        effective_to_date: null
+                        lender_id: null
+                        pending_status: null
+                        region_id: null
+                        state: MAHARASHTRA
+                        status: ACTIVE
+                      - address_line_1: ABC towers, Main Road
+                        address_line_2: ABC towers, Main Road
+                        address_line_3: null
+                        area_id: null
+                        branch_description: Shivajinagar
+                        branch_id: L1B002
+                        city: Pune
+                        cluster_id: L1C001
+                        district: PUNE
+                        effective_from_date: "2023-11-21T00:00:00Z"
+                        effective_to_date: null
+                        lender_id: null
+                        pending_status: null
+                        region_id: null
+                        state: MAHARASHTRA
+                        status: ACTIVE
+                      - address_line_1: ABC towers, Main Road
+                        address_line_2: ABC towers, Main Road
+                        address_line_3: null
+                        area_id: null
+                        branch_description: Hadapsar
+                        branch_id: L2B001
+                        city: Pune
+                        cluster_id: L2C001
+                        district: PUNE
+                        effective_from_date: "2023-11-21T00:00:00Z"
+                        effective_to_date: null
+                        lender_id: null
+                        pending_status: null
+                        region_id: null
+                        state: MAHARASHTRA
+                        status: ACTIVE
+                      - address_line_1: ABC towers, Main Road
+                        address_line_2: ABC towers, Main Road
+                        address_line_3: null
+                        area_id: null
+                        branch_description: Swargate
+                        branch_id: L2B002
+                        city: Pune
+                        cluster_id: L2C001
+                        district: PUNE
+                        effective_from_date: "2023-11-21T00:00:00Z"
+                        effective_to_date: null
+                        lender_id: null
+                        pending_status: null
+                        region_id: null
+                        state: MAHARASHTRA
+                        status: ACTIVE
+
+                BranchPincodeAssociationViewList:
+                  value:        
+                    businessStatusCode: 2
+                    buttons:
+                      - resource_id: "1127"
+                        status: Enable
+                        alias: ""
+                        resource_action_group: Create
+                    currentIndex: 1
+                    entityType: branch_pincode_association
+                    httpResponseCode: 200
+                    recordCount: 1
+                    totalPages: 1
+                    totalRecords: 1
+                    viewListData:
+                      - area_id: A1
+                        branch_id: L2B002
+                        branch_pincode_association_id: 061649c1-14da-496f-a2a6-1cb4878fef4f
+                        cluster_id: C1
+                        lender_id: L43
+                        lender_name: lender
+                        pending_status: PENDING
+                        pincode: "424101"
+                        region_id: R1
+
+
+        '400':
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 400
+                message: "bad request"
+        '401':
+          description: Unauthorized error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 401
+                message: "unauthorized user"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 500
+                message: "internal server error"          
+  
+
+
+  
+  /ops/ref-data/view-entity-details:
+    post:
+      description: To view different entity details
+      tags:
+        - Entity Details
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/payload-ViewDetails'
+            examples:
+              LenderViewDetails:
+                value:
+                  entity_type: Lender
+                  id: L43
+              LenderAssociationViewDetails:
+                value:
+                  entity_type: LenderAssociation
+                  id: LA1
+              RegionViewDetails:
+                value:
+                  entity_type: Region
+                  id: L1R001
+              AreaViewDetails:
+                value:
+                  entity_type: Area
+                  id: A1
+              ClusterViewDetails:
+                value:
+                  entity_type: Cluster
+                  id: CL4
+              BranchViewDetails:
+                value:
+                  entity_type: Branch
+                  id: B1
+              BranchPincodeAssociationViewDetails:
+                value:
+                  entity_type: BranchPincodeAssociation
+                  id: "061649c1-14da-496f-a2a6-1cb4878fef4"
+
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/successResponse-LenderViewDetails'
+                  - $ref: '#/components/schemas/successResponse-LenderAssociationViewDetails'
+                  - $ref: '#/components/schemas/successResponse-RegionViewDetails'
+                  - $ref: '#/components/schemas/successResponse-AreaViewDetails'
+                  - $ref: '#/components/schemas/successResponse-ClusterViewDetails'
+                  - $ref: '#/components/schemas/successResponse-BranchViewDetails'
+                  - $ref: '#/components/schemas/successResponse-BranchPincodeAssociationViewDetails'
+
+              examples:
+                LenderViewDetails:
+                  value:
+                    businessStatusCode: 2
+                    buttons:
+                      - resource_id: "1110"
+                        status: Enable
+                        alias: ""
+                        resource_action_group: Update
+                    entityType: lender
+                    httpResponseCode: 200
+                    viewDetailsData:
+                      address_line_1: Central Building, Pune Camp
+                      address_line_2: Central Building, Pune Camp
+                      city: Pune
+                      district: PUNE
+                      effective_from_date: '2023-08-29T00:00:00Z'
+                      effective_to_date: '2024-08-29T00:00:00Z'
+                      lender_description: Finaleap
+                      lender_id: L43
+                      lender_type: Primary
+                      pending_status: null
+                      pincode: "400134"
+                      state: MAHARASHTRA
+                      status: ACTIVE
+                      user_id_format: FL
+
+                LenderAssociationViewDetails:
+                  value:
+                    businessStatusCode: 2
+                    buttons:
+                      - resource_id: "1113"
+                        status: Enable
+                        alias: ""
+                        resource_action_group: Update
+                    entityType: lender_association
+                    httpResponseCode: 200
+                    viewDetailsData:
+                      associated_lender_id: A1
+                      associated_lender_name: Co-Lender2
+                      association_type: Co-Lender
+                      commission: .015
+                      effective_from_date: '2024-01-01T00:00:00Z'
+                      effective_to_date: null
+                      hurdle_rate: .025
+                      interest_rate: .045
+                      lender_association_id: LA1
+                      loan_type: Personal Loan
+                      login_fee_sharing: .15
+                      penalty_fee_sharing: .08
+                      pending_status: null
+                      primary_lender_id: A1
+                      primary_lender_name: FINALEAP
+                      priority: High
+                      processing_fee_sharing: .4
+                      status: Active
+
+                RegionViewDetails:
+                  value:
+                    businessStatusCode: 2
+                    buttons:
+                      - resource_id: "1116"
+                        status: Enable
+                        alias: ""
+                        resource_action_group: Update
+                    entityType: region
+                    httpResponseCode: 200
+                    viewDetailsData:
+                      effective_from_date: '2023-11-21T00:00:00Z'
+                      effective_to_date: null
+                      lender_id: null
+                      pending_status: null
+                      pincode: null
+                      region_description: India
+                      region_id: L1R001
+                      status: ACTIVE
+
+                AreaViewDetails:
+                  value:
+                    businessStatusCode: 2
+                    buttons:
+                      - resource_id: "1119"
+                        status: Enable
+                        alias: ""
+                        resource_action_group: Update
+                    entityType: area
+                    httpResponseCode: 200
+                    viewDetailsData:
+                      area_description: L1A001
+                      area_id: L1A001
+                      effective_from_date: '2023-11-21T00:00:00Z'
+                      effective_to_date: '2030-11-21T00:00:00Z'
+                      lender_id: null
+                      pending_status: null
+                      region_code: L1R001
+                      status: ACTIVE
+
+                ClusterViewDetails:
+                  value:
+                    businessStatusCode: 2
+                    buttons:
+                      - resource_id: "1122"
+                        status: Enable
+                        alias: ""
+                        resource_action_group: Update
+                    entityType: cluster
+                    httpResponseCode: 200
+                    viewDetailsData:
+                      area_id: L1A001
+                      cluster_description: L1C001
+                      cluster_id: CL4
+                      effective_from_date: '2023-11-21T00:00:00Z'
+                      effective_to_date: '2030-11-21T00:00:00Z'
+                      lender_id: null
+                      pending_status: null
+                      status: ACTIVE
+
+                BranchViewDetails:
+                  value:
+                    businessStatusCode: 2
+                    buttons:
+                      - resource_id: "1125"
+                        status: Enable
+                        alias: ""
+                        resource_action_group: Update
+                    entityType: branch
+                    httpResponseCode: 200
+                    viewDetailsData:
+                      address_line_1: ABC towers, Main Road
+                      address_line_2: ABC towers, Main Road
+                      address_line_3: ABC towers
+                      area_id: null
+                      branch_description: wakad
+                      branch_id: BR1
+                      city: Pune
+                      cluster_id: L1C006
+                      district: Pune
+                      effective_from_date: '2023-01-01T00:00:00Z'
+                      effective_to_date: '2024-12-31T00:00:00Z'
+                      lender_id: L4
+                      pending_status: null
+                      region_id: null
+                      state: Maharashtra
+                      status: ACTIVE
+
+                BranchPincodeAssociationViewDetails:
+                  value:
+                    businessStatusCode: 2
+                    buttons:
+                      - resource_id: "1128"
+                        status: Enable
+                        alias: ""
+                        resource_action_group: Update
+                    entityType: branch_pincode_association
+                    httpResponseCode: 200
+                    viewDetailsData:
+                      area_id: A1
+                      branch_id: L2B002
+                      branch_pincode_association_id: 061649c1-14da-496f-a2a6-1cb4878fef4f
+                      cluster_id: C1
+                      lender_id: L43
+                      lender_name: lender
+                      pending_status: null
+                      pincode: '424101'
+                      region_id: R1
+
+
+        '400':
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 400
+                message: "bad request"
+        '401':
+          description: Unauthorized error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 401
+                message: "unauthorized user"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 500
+                message: internal server error              
+  
+  /ops/assign-user:
+    post:
+      description: User Assign API
+      tags:
+        - Assign User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/payload-AssignUser'
+
+      responses:
+        '200': 
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse-AssginUser'
+
+              examples:
+                User is already working:
+                  value:
+                    businessStatusCode: 1
+                    httpResponseCode: 200
+                    message: "This case is already assigned to 1001"
+                Case assigned successfully:
+                  value:
+                    businessStatusCode: 1
+                    httpResponseCode: 200
+                    message: "Case assigned successfully"
+
+
+
+        '400':
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 400
+                message: "bad request"
+        '401':
+          description: Unauthorized error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 401
+                message: "unauthorized user"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 500
+                message: internal server error
+
+  /ops/fetch-action-and-reasons:
+    post:
+      description: For fetching action and responses
+      tags:
+        - Fetch Action and Respone
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/payload-FetchActionAndReasons'
+            examples:
+              ReassigningRole:
+                value:
+                  case_button: ReassigningRole
+                  case_status: KYC_DETAILS1
+
+
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/successResponse-FetchActionAndReasons'
+              examples:
+                example1:
+                  value:
+                    actions:
+                      Reassign Role:
+                        Reason:
+                          - Customer issue is not resolved over call
+                          - Customer has requested a home visit
+                          - Customer is visiting the branch
+                          - Other
+                        ReassignToRole:
+                          - RO
+                    businessStatusCode: 2
+                    httpResponseCode: 200
+
+        '400':
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 400
+                message: "bad request"
+        '401':
+          description: Unauthorized error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 401
+                message: "unauthorized user"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 500
+                message: internal server error
+
+  /ops/fetch-data-against-the-caseid:
+    post:
+      description: User Assign API
+      tags:
+        - Fetch Lead 
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/payload-FetchLeadDetails'
+            examples:
+              SALES_TELECALLER:
+                value:
+                  case_id: e8ebc63e-da6e-480e-91e7-ac2c7678fc60
+                  role_id: SALES_TELECALLER
+
+
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/successResponse-FetchLeadDetails'
+              examples:
+                example1:
+                  value:
+                    activityLog:
+                      - RecordId: 72588f2d-e1fe-436a-b615-bcbc84549e7c
+                        CaseId: e8ebc63e-da6e-480e-91e7-ac2c7678fc60
+                        CreatedBy: "1001"
+                        Action: Follow-up and Release
+                        Reason: Customer did not receive call.
+                        Comments: ""
+                        TimeStamp: "2024-02-15T18:22:48.292358Z"
+                        ChangeDetails: null
+                        IpDetails: null
+                      - RecordId: 06d39b19-0461-487f-aac1-fa6d1b9af66a
+                        CaseId: e8ebc63e-da6e-480e-91e7-ac2c7678fc60
+                        CreatedBy: "1001"
+                        Action: Claim Case
+                        Reason: Case Claimed by the user
+                        Comments: ""
+                        TimeStamp: "2024-02-15T18:18:59.536402Z"
+                        ChangeDetails: null
+                        IpDetails: null
+                      - RecordId: 975f6315-a497-4bd7-a91c-68d87ec806c0
+                        CaseId: e8ebc63e-da6e-480e-91e7-ac2c7678fc60
+                        CreatedBy: "1001"
+                        Action: Follow-up and Release
+                        Reason: Customer did not receive call.
+                        Comments: ""
+                        TimeStamp: "2024-02-15T18:17:18.825727Z"
+                        ChangeDetails: null
+                        IpDetails: null
+                    businessStatusCode: 2
+                    buttons:
+                      - resource_id: 1003
+                        status: Disable
+                        alias: Claim Case
+                        resource_action_group: ""
+                      - resource_id: 1004
+                        status: Enable
+                        alias: Release Case
+                        resource_action_group: ""
+                      - resource_id: 1006
+                        status: Enable
+                        alias: Update Case
+                        resource_action_group: ""
+                      - resource_id: 1005
+                        status: Enable
+                        alias: Send Link
+                        resource_action_group: ""
+                      - resource_id: 1160
+                        status: Disable
+                        alias: 
+                        resource_action_group: ""
+                    callGuideData:
+                      - SystemUserCallGuideId: UCG1
+                        CallGuideName: LEAD_ST_REGISTRATION_PENDING
+                        CallGuideDescription: Sales telecaller guide for case in REGISTRATION_PENDIN status for LEAD
+                        RoleId: SALES_TELECALLER
+                        AssociatedEntityType: LEAD
+                        AssociatedEntityStatus: KYC_DETAILS
+                        CallLinkDetails: Call customer on the mobile number\r\nAsk user to check PAN number\r\nAsk user to check if the login is already done using the same mobile number and PAN combination\r\nIf yes, ask user to connect with the arthLeap platform customer care
+                        Status: SENT
+                        EffectiveFromDate: "2023-08-29T00:00:00.00+00:00"
+                        EffectiveToDate: "2045-08-29T00:00:00.00+00:00"
+                        PendingStatus: null
+                    caseDetails:
+                      - CaseId: e8ebc63e-da6e-480e-91e7-ac2c7678fc60
+                        BranchCode: L1B001
+                        CreationDateAndTime: '2024-02-12T18:00:00.145Z'
+                        CaseTriggerType: SCHEDULER
+                        AssociatedEntityId: 2c7ff26a-12ae-4375-b892-6fdbb875066c
+                        AssociatedEntityType: LEAD
+                        CaseStatus: FOLLOWUP_REGISTRATION_PENDING
+                        AssociatedEntityStatus: KYC_DETAILS
+                        CaseStatusDescription: Customer registration is not successful- follow-up scheduled with customer.
+                        UpdatedDateAndTime: '2024-03-19T15:40:23.216652Z'
+                        FollowupDateTime: '2024-02-25T18:22:00Z'
+                        AdditionalInfo: null
+                        AssignedToRole: SALES_TELECALLER
+                        AssignedToUserId: '1001'
+                        AssignedToUserName: Shubham Navle STC
+                        ShowOnDashboard: null
+                        AttachmentType: null
+                        Attachment: null
+                        LenderId: L1
+                        ClusterCode: L1C001
+                        AreaCode: L1A001
+                        RegionCode: L1R001
+                        AssociatedBranchCode: null
+                        AssociatedRegionCode: null
+                        AssociatedClusterCode: null
+                        AssociatedAreaCode: null
+                        AssociatedLenderId: L1
+                    httpResponseCode: 200
+                    notificationDetails:
+                      - NotificationId: 1787fa48-0c8f-4e38-aa0e-231b4d856c29
+                        NotificationTriggerType: USER
+                        CreationDateAndTime: '2024-02-19T07:17:38.79929Z'
+                        AssociatedEntityType: CASE
+                        AssociatedEntityId: e8ebc63e-da6e-480e-91e7-ac2c7678fc60
+                        AssociatedEntityStatus: ''
+                        ModeOfCommunication: Email
+                        NotificationContent: Dear customer, Please refer to Coupon Code - ABBBBB
+                        NotificationStatus: SENT
+                        NotificationDescription: Coupon Code
+                        NotificationSentTo: shubham.n@arthavedh.com
+                        NotificationShortName: Send Link
+                      - NotificationId: 7f2ebd0f-2cf7-42bd-81c5-5b3ffc3a42a9
+                        NotificationTriggerType: USER
+                        CreationDateAndTime: '2024-02-19T07:17:37.207772Z'
+                        AssociatedEntityType: CASE
+                        AssociatedEntityId: e8ebc63e-da6e-480e-91e7-ac2c7678fc60
+                        AssociatedEntityStatus: ''
+                        ModeOfCommunication: SMS
+                        NotificationContent: Dear customer, Please refer to Coupon Code - ABBBBB
+                        NotificationStatus: SENT
+                        NotificationDescription: Coupon Code
+                        NotificationSentTo: '7517513488'
+                        NotificationShortName: Send Link
+                    userDetails:
+                      - LeadId: 2c7ff26a-12ae-4375-b892-6fdbb875066c
+                        CreationDateAndTime: '2024-02-15T11:55:04.49611Z'
+                        UpdatedDateAndTime: '2024-02-15T17:37:42.849821Z'
+                        PAN: CGEPN9253Q
+                        Mobile: '7517513488'
+                        Status: REGISTERED
+                        Description: User is successfully Registered
+                    workingStatus: "1001 is working on this case"
+                      
+                    
+
+
+        '400':
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 400
+                message: "bad request"
+        '401':
+          description: Unauthorized error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 401
+                message: "unauthorized user"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 500
+                message: internal server error
+
+  /ops/fetch-loan-application-details:
+    post:
+      description: To Fetch Loan Application
+      tags:
+        - Fetch Loan Application Details 
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/payload-FetchLoanApplication'
+            examples:
+              SALES_TELECALLER:
+                value:
+                  case_id: e8ebc63e-da6e-480e-91e7-ac2c7678fc59
+                  role_id: SALES_TELECALLER
+
+
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/successResponse-FetchLoanApplication'
+              examples:
+                example1:
+                  value:
+                    activityLog: 
+                    - RecordId: "5afee270-1cea-4cd0-baf6-bfbf40e47944"
+                      CaseId: "e8ebc63e-da6e-480e-91e7-ac2c7678fc59"
+                      CreatedBy: "1001"
+                      Action: "Reassign Role"
+                      Reason: ""
+                      Comments: ""
+                      TimeStamp: "2024-02-16T19:37:14.514562Z"
+                      ChangeDetails: 
+                      IpDetails: 
+                    businessStatusCode: "2"
+                    buttons: 
+                    - resource_id: "1003"
+                      status: "Enable"
+                      alias: "Claim Case"
+                      resource_action_group: ""
+                    - resource_id: "1004"
+                      status: "Disable"
+                      alias: "Release Case"
+                      resource_action_group: ""
+                    - resource_id: "1006"
+                      status: "Disable"
+                      alias: "Update Case"
+                      resource_action_group: ""
+                    - resource_id: "1007"
+                      status: "Disable"
+                      alias: "Upload Document"
+                      resource_action_group: ""
+                    - resource_id: "1008"
+                      status: "Disable"
+                      alias: "View Application"
+                      resource_action_group: ""
+                    - resource_id: "1005"
+                      status: "Disable"
+                      alias: "Send Link"
+                      resource_action_group: ""
+                    - resource_id: "1011"
+                      status: "Disable"
+                      alias: "Reassign Role"
+                      resource_action_group: ""
+                    - resource_id: "1160"
+                      status: "Disable"
+                      alias: ""
+                      resource_action_group: ""
+                    callGuideData: 
+                    - SystemUserCallGuideId: "UCG2"
+                      CallGuideName: "LEAD_ST_REGISTRATION_PENDING"
+                      CallGuideDescription: "Sales telecaller guide for case in REGISTRATION_PENDING status for LEAD"
+                      RoleId: "SALES_TELECALLER"
+                      AssociatedEntityType: "LOAN_APPLICATION"
+                      AssociatedEntityStatus: "KYC_DETAILS"
+                      CallLinkDetails: |
+                       "Call customer on the mobile numberAsk user to check PAN number Ask userto check if the login is already done using the samemobile number and PAN combination If yes, askuser to connect with the arthLeap platform customercare"
+                      Status: "SENT"
+                      EffectiveFromDate: "2023-08-29T00:00:00.00+00:00"
+                      EffectiveToDate: "2045-08-29T00:00:00.00+00:00"
+                      PendingStatus: 
+                    caseDetails: 
+                    - CaseId: "e8ebc63e-da6e-480e-91e7-ac2c7678fc59"
+                      BranchCode: "L1B001"
+                      CreationDateAndTime: "2024-02-12T18:00:00.145Z"
+                      CaseTriggerType: "SCHEDULER"
+                      AssociatedEntityId: "47cf4134-55ce-4a06-a40dcae998032b70"
+                      AssociatedEntityType: "LOAN_APPLICATION"
+                      CaseStatus: "KYC_DETAILS"
+                      AssociatedEntityStatus: "KYC_DETAILS"
+                      CaseStatusDescription: "Ckyc Succeeded"
+                      UpdatedDateAndTime: "2024-03-05T11:52:44.841608Z"
+                      FollowupDateTime: "2024-02-12T23:30:00.145Z"
+                      AdditionalInfo: 
+                      AssignedToRole: "SALES_TELECALLER"
+                      AssignedToUserId: 
+                      AssignedToUserName: 
+                      ShowOnDashboard: 
+                      AttachmentType: 
+                      Attachment: 
+                      LenderId: "L1"
+                      ClusterCode: "L1C001"
+                      AreaCode: "L1A001"
+                      RegionCode: "L1R001"
+                      AssociatedBranchCode: 
+                      AssociatedRegionCode: 
+                      AssociatedClusterCode: 
+                      AssociatedAreaCode: 
+                      AssociatedLenderId: "L1"
+                      LoanAmount: "268000.00"
+                      LoanType: "Personal Loan"
+                      LoanSubType: 
+                      LoanTenure: "24"
+                      LoanappidExternal: "FL00001PL00001"
+                      Mobile: "7517513488"
+                      Pan: "CGEPN9253Q"
+                      EmailId: "snavale230@gmail.com"
+                    httpResponseCode: "200"
+                    notificationDetails: 
+                    - NotificationId: "2a4480cf-0c85-4971-bdd7-90a6761a0009"
+                      NotificationTriggerType: "USER"
+                      CreationDateAndTime: "2024-02-23T10:12:45.666046Z"
+                      AssociatedEntityType: "CASE"
+                      AssociatedEntityId: "e8ebc63e-da6e-480e-91e7-ac2c7678fc59"
+                      AssociatedEntityStatus: "FOLLOWUP_REGISTRATION_PENDING"
+                      ModeOfCommunication: "SMS"
+                      NotificationContent: "Dear User, Case e8ebc63e-da6e-480e-91e7-ac2c7678fc58 unassigned from specific user. Log in to the portal for details. - Finaleap"
+                      NotificationStatus: "SENT"
+                      NotificationDescription: "Remove User"
+                      NotificationSentTo: "shubham.n@arthavedh.com"
+                      NotificationShortName: "Reassign User"
+              
+              
+        '400':
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 400
+                message: "bad request"
+        '401':
+          description: Unauthorized error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 401
+                message: "unauthorized user"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 500
+                message: internal server error
+
+
+  /ops/fetch-system-user-id:
+    post:
+      description: To Fetch System User ID
+      tags:
+        - Fetch System User IDs Generic
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/payload-FetchSystemUserIdGeneric'
+            
+
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/successResponse-FetchSystemUserIdGeneric'
+              examples: 
+                example1:
+                  value:
+                    businessStatusCode: "2"
+                    httpResponseCode: "200"
+                    userIdList: 
+                       systemUserId: "1001"
+                       systemUserName: "Shubham Navle STC"   
+
+      
+        '400':
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 400
+                message: "bad request"
+        '401':
+          description: Unauthorized error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 401
+                message: "unauthorized user"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 500
+                message: internal server error
+
+  /ops/reassign-to-role:
+    post:
+      description: To REASSIGN ROLE
+      tags:
+        - Role Reassigned
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/payload-RoleReassign'
+            examples:
+              example1:
+                value:
+                  case_id: "e8ebc63e-da6e-480e-91e7-ac2c7678fc60"
+                  comment: "comment"
+                  reason: "reason"
+                  assigned_to_role: "RO"
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse-RoleReassign'
+              examples:
+                RoleReassignedSuccessfully:
+                  value:
+                    businessStatusCode: "2"
+                    httpResponseCode: "200"
+                    message: "Role Reassigned Successfully!"
+                  
+      
+        '400':
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 400
+                message: "bad request"
+        '401':
+          description: Unauthorized error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 401
+                message: "unauthorized user"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 500
+                message: internal server error
+
+  /ops/reassign-user:
+    post:
+      description: To REASSIGN USER
+      tags:
+        - Reassign User
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/payload-ReassignUser'
+            examples:
+              If Unassigned User Is True:
+                  value:
+
+              If Unassigned User Is False:
+                  value:
+
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse-ReassignUser'
+              examples:
+                If Unassigned User Is True:
+                  value:
+                    businessStatusCode: "2"
+                    httpResponseCode: "200"
+                    message: "User Unassigned Successfully!"
+                If Unassigned User Is False:
+                  value:
+                    businessStatusCode: "2"
+                    httpResponseCode: "200"
+                    message: "User Reassigned Successfully!"
+
+        '400':
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 400
+                message: "bad request"
+        '401':
+          description: Unauthorized error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 401
+                message: "unauthorized user"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 500
+                message: internal server error
+
+  /ops/release-case:
+    post:
+      description: To RELEASE CASE
+      tags:
+        - Release Case
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/payload-ReleaseCase'
+            examples:
+              example1:
+                value:
+                  case_id: "e8ebc63e-da6e-480e-91e7-ac2c7678fc60"
+                  reason: "release case"
+                  comment: "comment"
+
+
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse-ReleaseCase'
+              examples:
+                example1:
+                  value:
+                    businessStatusCode: "2"
+                    httpResponseCode: "200"
+                    message: "Case Released Successfully!"
+
+        '400':
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 400
+                message: "bad request"
+        '401':
+          description: Unauthorized error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 401
+                message: "unauthorized user"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 500
+                message: internal server error
+
+  /ops/send-link:
+    post:
+      description: To SEND LINK
+      tags:
+        - Send Link
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/payload-SendLink'
+            examples:
+              example1:
+                value:
+                  case_id: "e8ebc63e-da6e-480e-91e7-ac2c7678fc60"
+                  link_type: "Loan Offer"
+                  sms_method: "true"
+                  email_method: "true"
+                  details: "COUPON-123"
+                  mobile_number: "7517513488"
+                  email: "shubham.n@arthavedh.com"
+                  status: "REGISTRATION_PENDING"
+
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse-SendLink'
+              examples:
+                Sent Successfully:
+                  value:
+                    businessStatusCode: "2"
+                    email_response: "Email notification successful!"
+                    httpResponseCode: "200"
+                    sms_response: "SMS notification successful!"
+
+        '400':
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 400
+                message: "bad request"
+        '401':
+          description: Unauthorized error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 401
+                message: "unauthorized user"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 500
+                message: internal server error
+
+  /ops/update-case:
+    post:
+      description: To UPDATE CASE
+      tags:
+        - Update case
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/payload-UpdateCase'
+            examples:
+              example1:
+                value:
+                  case_id: "e8ebc63e-da6e-480e-91e7-ac2c7678fc60"
+                  action: "Follow-up"
+                  comment: "NA"
+                  reason: "Need to work on other case"
+                  case_status: "REGISTRATION_PENDING"
+                  follow_up_date_time: "02/02/2023"
+                  
+
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse-UpdateCase'
+              examples:
+                Updated Successfully:
+                  value:
+                    businessStatusCode: "2"
+                    httpResponseCode: "200"
+                    message: "Case Updated Successfully!"
+                  
+  
+
+        '400':
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 400
+                message: "bad request"
+        '401':
+          description: Unauthorized error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 401
+                message: "unauthorized user"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 500
+                message: internal server error
+  
+#--------------------------------------------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------------------------------------------
+
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+
+#--------------------------------------------------------------------------------------------------------------------------------------
+  schemas:
+    payload-login:
+      type: object
+      properties:
+          id:
+            type: string
+            
+    successResponse-LoginAPI:
+      type: object
+      properties:
+        businessStatusCode:
+          type: integer
+        emailId:
+          type: string
+        httpResponseCode:
+          type: integer
+        message:
+          type: string
+        message1:
+          type: string
+        name:
+          type: string
+        roleId:
+          type: string
+        userId:
+          type: string
+          
+    payload-OTPValidation:
+      type: object
+      properties:
+        otp:
+          type: string
+          
+    successResponse-OTPValidation:
+      type: object
+      properties:
+        message:
+          type: string
+        businessStatusCode:
+          type: integer
+        httpResponseCode:
+          type: integer
+          
+    successResponse-menuSubmenuAccsess:
+      type: object
+      properties:
+        businessStatusCode:
+          type: integer
+        buttons:
+          type: array
+          items:
+              type: object
+              properties:
+                resourse_id:
+                  type: string
+                resourse_alias:
+                  type: string
+                parent_resourse_id:
+                  type: string
+                  nullable: true
+                resourse_type:
+                  type: string
+        httpResponseCode:
+          type: integer
+  
+    payload-common:
+      type: object
+      properties:
+        pagenumber:
+          type: integer
+        parameter:
+          type: array
+          items:
+            type: object
+            properties:
+              columnName: 
+                type: string
+              condition:
+                type: string
+              value:
+                type: string
+                nullable: true
+                
+    succsessResponse-LeadCase:
+      type: object
+      properties:
+        businessStatusCode:
+          type: integer
+          description: Business status code
+        caseCount:
+          type: integer
+          description: Total number of cases
+        currentIndex:
+          type: integer
+          description: Current index
+        httpResponseCode:
+          type: integer
+          description: HTTP response code
+        leadCases:
+          type: array
+          items:
+            type: object
+            properties:
+              CaseId:
+                type: string
+                description: Unique identifier for the case
+              BranchCode:
+                type: string
+                nullable: true
+                description: Branch code associated with the case
+              CaseTriggerType:
+                type: string
+                description: Type of trigger for the case
+              AssociatedEntityId:
+                type: string
+                description: Identifier of the associated entity
+              AssociatedEntityType:
+                type: string
+                description: Type of associated entity
+              CaseStatus:
+                type: string
+                description: Status of the case
+              AssociatedEntityStatus:
+                type: string
+                description: Status of the associated entity
+              CaseStatusDescription:
+                type: string
+                description: Description of the case status
+              FollowupDateTime:
+                type: string
+                format: date-time
+                description: Date and time of follow-up
+              AssignedToRole:
+                type: string
+                description: Role assigned to handle the case
+              AssignedToUserId:
+                type: string
+                nullable: true
+                description: Identifier of the user assigned to handle the case
+              AssignedToUserName:
+                type: string
+                nullable: true
+                description: Name of the user assigned to handle the case
+              ShowOnDashboard:
+                type: string
+                nullable: true
+                description: Indicates whether the case should be shown on the dashboard
+              AttachmentType:
+                type: string
+                nullable: true
+                description: Type of attachment associated with the case
+              Attachment:
+                type: string
+                nullable: true
+                description: Attachment associated with the case
+              LenderId:
+                type: string
+                nullable: true
+                description: Lender ID associated with the case
+              ClusterCode:
+                type: string
+                nullable: true
+                description: Cluster code associated with the case
+              AreaCode:
+                type: string
+                nullable: true
+                description: Area code associated with the case
+              RegionCode:
+                type: string
+                nullable: true
+                description: Region code associated with the case
+              AssociatedBranchCode:
+                type: string
+                nullable: true
+                description: Branch code associated with the associated entity
+              AssociatedRegionCode:
+                type: string
+                nullable: true
+                description: Region code associated with the associated entity
+              AssociatedClusterCode:
+                type: string
+                nullable: true
+                description: Cluster code associated with the associated entity
+              AssociatedAreaCode:
+                type: string
+                nullable: true
+                description: Area code associated with the associated entity
+              AssociatedLenderId:
+                type: string
+                nullable: true
+                description: Lender ID associated with the associated entity
+              LeadId:
+                type: string
+                description: Identifier of the lead associated with the case
+              PAN:
+                type: string
+                description: PAN of the lead associated with the case
+              Mobile:
+                type: string
+                description: Mobile number of the lead associated with the case
+              Status:
+                type: string
+                description: Status of the lead associated with the case
+              Description:
+                type: string
+                description: Description of the lead status
+        totalCases: 
+          type: integer
+          description: Number of total cases
+        totalPages:        
+          type: integer
+          description: Number of total pages
+    
+    succsessResponse-LoanApplication:
+      type: object
+      properties:
+        businessStatusCode:
+          type: integer
+        caseCount:
+          type: integer
+        currentIndex:
+          type: integer
+        httpResponseCode:
+          type: integer
+        loanApplicationCases:
+          type: array
+          items:
+            type: object
+            properties:
+              CaseId:
+                type: string
+              BranchCode:
+                type: string
+              CaseTriggerType:
+                type: string
+              AssociatedEntityId:
+                type: string
+              AssociatedEntityType:
+                type: string
+              CaseStatus:
+                type: string
+              AssociatedEntityStatus:
+                type: string
+              CaseStatusDescription:
+                type: string
+              UpdatedDateAndTime:
+                type: string
+                format: date-time
+              FollowupDateTime:
+                type: string
+                format: date-time
+              AdditionalInfo:
+                type: string
+                nullable: true
+              AssignedToRole:
+                type: string
+                nullable: true
+              AssignedToUserId:
+                type: string
+                nullable: true
+              AssignedToUserName:
+                type: string
+                nullable: true
+              ShowOnDashboard:
+                type: string
+                nullable: true
+              AttachmentType:
+                type: string
+                nullable: true
+              Attachment:
+                type: string
+                nullable: true
+              LenderId:
+                type: string
+              ClusterCode:
+                type: string
+              AreaCode:
+                type: string
+              RegionCode:
+                type: string
+              AssociatedBranchCode:
+                type: string
+                nullable: true
+              AssociatedRegionCode:
+                type: string
+                nullable: true
+              AssociatedClusterCode:
+                type: string
+                nullable: true
+              AssociatedAreaCode:
+                type: string
+                nullable: true
+              AssociatedLenderCode:
+                type: string
+              LoanAppId:
+                type: string
+              LoanAmount:
+                type: string
+              LoanType:
+                type: string
+              LoanSubType:
+                type: string
+              LoanTenure:
+                type: string
+              LoanAppIdExternal:
+                type: string
+        totalCases: 
+          type: integer
+          description: Number of total cases
+        totalPages:        
+          type: integer
+          description: Number of total pages
+          
+    succsessResponse-LoanApplicationAudit:
+      type: object
+      properties:
+        businessStatusCode:
+          type: integer
+        caseCount:
+          type: integer
+        currentIndex:
+          type: integer
+        httpResponseCode:
+          type: integer
+        loanApplicationAuditData:
+          type: array
+          items:
+            type: object
+            properties:
+              auditId:
+                type: string
+              loanApplicationId:
+                type: string
+              creationDatetime:
+                type: string
+              stage:
+                type: string
+              description:
+                type: string
+              externalLoanAppId:
+                type: string
+        totalCases: 
+          type: integer
+          description: Number of total cases
+        totalPages:        
+          type: integer
+          description: Number of total pages      
+          
+    
+    CaseClaimedUnsuccsessful:
+      description:  User Can't claim this case If other user is already working 
+                    on that case
+      type: object
+      properties:
+        businessStatusCode:
+          type: integer
+        httpResponseCode:
+          type: integer
+        message:
+          type: string
+          
+    CaseClaimedSuccsessful:
+      type: object
+      properties:
+        businessStatusCode:
+          type: integer
+        buttons:
+          type: array
+          items:
+            type: object
+            properties:
+              resourse_id:
+                type: string
+              status:
+                type: string
+              alias:
+                type: string
+              resourse_action_group:
+                type: string
+        httpResponseCode:
+          type: integer
+        message:
+          type: string
+
+    payload-ViewList:
+      type: object
+      properties:
+        entity_list:
+          type: string
+        pagenumber:
+          type: integer
+        parameter:
+          type: array
+          items:
+            type: object
+            properties:
+              columnName:
+                type: string
+              condition:
+                type: string
+              value:
+                type: string
+
+    payload-ViewDetails:
+      type: object
+      properties:
+        entity_type:
+          type: string
+        id:
+          type: string
+
+    successResponse-LenderViewList:
+      type: object
+      properties:
+        businessStatusCode:
+          type: number
+        buttons:
+          type: array
+          items:
+            type: object
+            properties:
+              resourse_id:
+                type: string
+              status:
+                type: string
+              alias:
+                type: string
+              resource_action_group:
+                type: string
+        currentIndex:
+          type: number 
+        entityType:
+          type: string
+        httpResponseCode: 
+            type: integer
+        recordCount:
+          type: integer 
+        totalPages:
+          type: integer 
+        totalRecords:
+          type: integer 
+        viewListData:
+          type: array
+          items:
+            type: object
+            properties:
+              address_line_1:
+                type: string
+              address_line_2:
+                type: string
+              city:
+                type: string
+              district:
+                type: string
+              effective_from_date:
+                type: string
+                format: date-time
+              effective_to_date:
+                type: string
+                format: date-time
+                nullable: true           
+              lender_description:
+                type: string
+              lender_id:
+                type: string
+              lender_type:
+                type: string
+              pending_status:
+                type: string         
+              pincode:
+                type: string
+              state:
+                type: string
+              status:
+                type: string
+              user_id_format:
+                type: string
+
+    successResponse-LenderAssociationList: 
+      type: object
+      properties:
+        businessStatusCode:
+          type: number
+        buttons:
+          type: array
+          items:
+            type: object
+            properties:
+              resourse_id:
+                type: string
+              status:
+                type: string
+              alias:
+                type: string
+              resource_action_group:
+                type: string
+        currentIndex:
+          type: number 
+        entityType:
+          type: string
+        httpResponseCode: 
+            type: integer
+        recordCount:
+          type: integer 
+        totalPages:
+          type: integer 
+        totalRecords:
+          type: integer 
+        viewListData:
+          type: array
+          items:
+            type: object
+            properties:
+              associated_lender_id:
+                type: string
+              associated_lender_name:
+                type: string
+              association_type:
+                type: string
+              commission:
+                type: string
+              effective_from_date:
+                type: string
+                format: date-time
+              effective_to_date:
+                type: string
+                format: date-time
+                nullable: true
+              hurdle_rate:
+                type: string
+              interest_rate:
+                type: string
+              lender_association_id:
+                type: string
+              loan_type:
+                type: string
+              login_fee_sharing:
+                type: string
+              penalty_fee_sharing:
+                type: string
+              pending_status:
+                type: string
+                nullable: true
+              primary_lender_id:
+                type: string
+              primary_lender_name:
+                type: string
+              priority:
+                type: string
+              processing_fee_sharing:
+                type: string
+              status:
+                type: string
+
+    successResponse-RegionViewList:            
+      type: object
+      properties:
+        businessStatusCode:
+          type: number
+        buttons:
+          type: array
+          items:
+            type: object
+            properties:
+              resourse_id:
+                type: string
+              status:
+                type: string
+              alias:
+                type: string
+              resource_action_group:
+                type: string
+        currentIndex:
+          type: number 
+        entityType:
+          type: string
+        httpResponseCode: 
+            type: integer
+        recordCount:
+          type: integer 
+        totalPages:
+          type: integer 
+        totalRecords:
+          type: integer 
+        viewListData:
+          type: array
+          items:
+            type: object
+            properties:
+              effective_from_date:
+                type: string
+                format: date-time
+              effective_to_date:
+                type: string
+                format: date-time
+              lender_id:
+                type: string
+              pending_status:
+                type: string
+              pincode:
+                type: string
+              region_description:
+                type: string
+              region_id:
+                type: string
+              status:
+                type: string
+
+    successResponse-AreaViewList:
+      type: object
+      properties:
+        businessStatusCode:
+          type: number
+        buttons:
+          type: array
+          items:
+            type: object
+            properties:
+              resourse_id:
+                type: string
+              status:
+                type: string
+              alias:
+                type: string
+              resource_action_group:
+                type: string
+        currentIndex:
+          type: number 
+        entityType:
+          type: string
+        httpResponseCode: 
+            type: integer
+        recordCount:
+          type: integer 
+        totalPages:
+          type: integer 
+        totalRecords:
+          type: integer 
+        viewListData:
+          type: array
+          items:
+            type: object
+            properties:
+              area_description:
+                type: string
+              area_id:
+                type: string
+              effective_from_date:
+                type: string
+              effective_to_date:
+                type: string
+              lender_id:
+                type: string
+              pending_status:
+                type: string
+              region_code:
+                type: string
+              status:
+                type: string
+
+    successResponse-ClusterViewList:
+      type: object
+      properties:
+        businessStatusCode:
+          type: number
+        buttons:
+          type: array
+          items:
+            type: object
+            properties:
+              resourse_id:
+                type: string
+              status:
+                type: string
+              alias:
+                type: string
+              resource_action_group:
+                type: string
+        currentIndex:
+          type: number 
+        entityType:
+          type: string
+        httpResponseCode: 
+            type: integer
+        recordCount:
+          type: integer 
+        totalPages:
+          type: integer 
+        totalRecords:
+          type: integer 
+        viewListData:
+          type: array
+          items:
+            type: object
+            properties:
+              area_id:
+                type: string
+              cluster_description:
+                type: string
+              cluster_id:
+                type: string
+              effective_from_date:
+                type: string
+              effective_to_date:
+                type: string
+              lender_id:
+                type: string
+              pending_status:
+                type: string
+              status:
+                type: string
+
+    successResponse-BranchViewList:
+      type: object
+      properties:
+        businessStatusCode:
+          type: number
+        buttons:
+          type: array
+          items:
+            type: object
+            properties:
+              resourse_id:
+                type: string
+              status:
+                type: string
+              alias:
+                type: string
+              resource_action_group:
+                type: string
+        currentIndex:
+          type: number 
+        entityType:
+          type: string
+        httpResponseCode: 
+            type: integer
+        recordCount:
+          type: integer 
+        totalPages:
+          type: integer 
+        totalRecords:
+          type: integer 
+        viewListData:
+          type: array
+          items:
+            type: object
+            properties:
+              address_line_1:
+                type: string
+              address_line_2:
+                type: string
+              address_line_3:
+                type: string
+              area_id:
+                type: string
+              branch_description:
+                type: string
+              branch_id:
+                type: string
+              city:
+                type: string
+              cluster_id:
+                type: string
+              district:
+                type: string
+              effective_from_date:
+                type: string
+              effective_to_date:
+                type: string
+              lender_id:
+                type: string
+              pending_status:
+                type: string
+              region_id:
+                type: string
+              state:
+                type: string
+              status:
+                type: string
+
+    successResponse-BranchPincodeAssociationViewList:
+      type: object
+      properties:
+        businessStatusCode:
+          type: number
+        buttons:
+          type: array
+          items:
+            type: object
+            properties:
+              resourse_id:
+                type: string
+              status:
+                type: string
+              alias:
+                type: string
+              resource_action_group:
+                type: string
+        currentIndex:
+          type: number 
+        entityType:
+          type: string
+        httpResponseCode: 
+            type: integer
+        recordCount:
+          type: integer 
+        totalPages:
+          type: integer 
+        totalRecords:
+          type: integer 
+        viewListData:
+          type: array
+          items:
+            type: object
+            properties:
+              area_id:
+                type: string
+              branch_id:
+                type: string
+              branch_pincode_association_id:
+                type: string
+              cluster_id:
+                type: string
+              lender_id:
+                type: string
+              lender_name:
+                type: string
+              pending_status:
+                type: string
+              pincode:
+                type: string
+              region_id:
+                type: string
+
+    successResponse-LenderViewDetails:
+      type: object
+      properties:
+        businessStatusCode:
+          type: number
+        buttons:
+          type: array
+          items:
+            type: object
+            properties:
+              resourse_id:
+                type: string
+              status:
+                type: string
+              alias:
+                type: string
+              resource_action_group:
+                type: string       
+        entityType:
+          type: string
+        httpResponseCode: 
+            type: integer       
+        viewDetailsData:
+          type: object
+          properties:
+            address_line_1:
+              type: string
+            address_line_2:
+              type: string
+            city:
+              type: string
+            district:
+              type: string
+            effective_from_date:
+              type: string
+              format: date-time
+            effective_to_date:
+              type: string
+              format: date-time
+              nullable: true           
+            lender_description:
+              type: string
+            lender_id:
+              type: string
+            lender_type:
+              type: string
+            pending_status:
+              type: string         
+            pincode:
+              type: string
+            state:
+              type: string
+            status:
+              type: string
+            user_id_format:
+              type: string
+
+    successResponse-LenderAssociationViewDetails:
+      type: object
+      properties:
+        businessStatusCode:
+          type: number
+        buttons:
+          type: array
+          items:
+            type: object
+            properties:
+              resourse_id:
+                type: string
+              status:
+                type: string
+              alias:
+                type: string
+              resource_action_group:
+                type: string
+        entityType:
+          type: string
+        httpResponseCode: 
+            type: integer
+        viewDetailsData:
+            type: object
+            properties:
+              associated_lender_id:
+                type: string
+              associated_lender_name:
+                type: string
+              association_type:
+                type: string
+              commission:
+                type: string
+              effective_from_date:
+                type: string
+                format: date-time
+              effective_to_date:
+                type: string
+                format: date-time
+                nullable: true
+              hurdle_rate:
+                type: string
+              interest_rate:
+                type: string
+              lender_association_id:
+                type: string
+              loan_type:
+                type: string
+              login_fee_sharing:
+                type: string
+              penalty_fee_sharing:
+                type: string
+              pending_status:
+                type: string
+                nullable: true
+              primary_lender_id:
+                type: string
+              primary_lender_name:
+                type: string
+              priority:
+                type: string
+              processing_fee_sharing:
+                type: string
+              status:
+                type: string
+
+    successResponse-RegionViewDetails:            
+      type: object
+      properties:
+        businessStatusCode:
+          type: number
+        buttons:
+          type: array
+          items:
+            type: object
+            properties:
+              resourse_id:
+                type: string
+              status:
+                type: string
+              alias:
+                type: string
+              resource_action_group:
+                type: string 
+        entityType:
+          type: string
+        httpResponseCode: 
+            type: integer
+        viewDetailsData:
+            type: object
+            properties:
+              effective_from_date:
+                type: string
+                format: date-time
+              effective_to_date:
+                type: string
+                format: date-time
+              lender_id:
+                type: string
+              pending_status:
+                type: string
+              pincode:
+                type: string
+              region_description:
+                type: string
+              region_id:
+                type: string
+              status:
+                type: string
+
+    successResponse-AreaViewDetails:
+      type: object
+      properties:
+        businessStatusCode:
+          type: number
+        buttons:
+          type: array
+          items:
+            type: object
+            properties:
+              resourse_id:
+                type: string
+              status:
+                type: string
+              alias:
+                type: string
+              resource_action_group:
+                type: string 
+        entityType:
+          type: string
+        httpResponseCode: 
+            type: integer
+        viewDetailsData:
+            type: object
+            properties:
+              area_description:
+                type: string
+              area_id:
+                type: string
+              effective_from_date:
+                type: string
+              effective_to_date:
+                type: string
+              lender_id:
+                type: string
+              pending_status:
+                type: string
+              region_code:
+                type: string
+              status:
+                type: string
+
+    successResponse-ClusterViewDetails:
+      type: object
+      properties:
+        businessStatusCode:
+          type: number
+        buttons:
+          type: array
+          items:
+            type: object
+            properties:
+              resourse_id:
+                type: string
+              status:
+                type: string
+              alias:
+                type: string
+              resource_action_group:
+                type: string
+        entityType:
+          type: string
+        httpResponseCode: 
+            type: integer
+        viewDetailsData:
+            type: object
+            properties:
+              area_id:
+                type: string
+              cluster_description:
+                type: string
+              cluster_id:
+                type: string
+              effective_from_date:
+                type: string
+              effective_to_date:
+                type: string
+              lender_id:
+                type: string
+              pending_status:
+                type: string
+              status:
+                type: string
+
+    successResponse-BranchViewDetails:
+      type: object
+      properties:
+        businessStatusCode:
+          type: number
+        buttons:
+          type: array
+          items:
+            type: object
+            properties:
+              resourse_id:
+                type: string
+              status:
+                type: string
+              alias:
+                type: string
+              resource_action_group:
+                type: string 
+        entityType:
+          type: string
+        httpResponseCode: 
+            type: integer
+        viewDetailsData:
+            type: object
+            properties:
+              address_line_1:
+                type: string
+              address_line_2:
+                type: string
+              address_line_3:
+                type: string
+              area_id:
+                type: string
+              branch_description:
+                type: string
+              branch_id:
+                type: string
+              city:
+                type: string
+              cluster_id:
+                type: string
+              district:
+                type: string
+              effective_from_date:
+                type: string
+              effective_to_date:
+                type: string
+              lender_id:
+                type: string
+              pending_status:
+                type: string
+              region_id:
+                type: string
+              state:
+                type: string
+              status:
+                type: string
+
+    successResponse-BranchPincodeAssociationViewDetails:
+      type: object
+      properties:
+        businessStatusCode:
+          type: number
+        buttons:
+          type: array
+          items:
+            type: object
+            properties:
+              resourse_id:
+                type: string
+              status:
+                type: string
+              alias:
+                type: string
+              resource_action_group:
+                type: string
+        entityType:
+          type: string
+        httpResponseCode: 
+            type: integer
+        viewListData:
+            type: object
+            properties:
+              area_id:
+                type: string
+              branch_id:
+                type: string
+              branch_pincode_association_id:
+                type: string
+              cluster_id:
+                type: string
+              lender_id:
+                type: string
+              lender_name:
+                type: string
+              pending_status:
+                type: string
+              pincode:
+                type: string
+              region_id:
+                type: string    
+    
+    payload-AssignUser:
+      type: object
+      properties:
+        case_id:
+          type: string
+        user_id:
+          type: string
+        comment:
+          type: string
+
+    payload-FetchActionAndReasons:
+      type: object
+      properties:
+        case_button:
+          type: string
+          example: <CASE BUTTON>
+        case_status:
+          type: string
+
+    payload-FetchLeadDetails:
+      type: object
+      properties:
+        case_id:
+          type: string
+          example: <CASE_ID>
+        role_id:
+          type: string
+          example: <USER_ROLE>
+
+    payload-FetchLoanApplication:
+      type: object
+      properties:
+        case_id:
+          type: string
+          example: <CASE_ID>
+        role_id:
+          type: string
+          example: <USER_ROLE>
+
+    payload-FetchSystemUserIdGeneric:
+      type: object
+      properties:
+        case_id:
+          type: string
+          example: e8ebc63e-da6e-480e-91e7-ac2c7678fc60
+
+    payload-RoleReassign:
+      type: object
+      properties:
+        case_id: 
+          type: string
+        comment: 
+          type: string
+        reason: 
+          type: string
+        assigned_to_role: 
+          type: string
+
+    payload-ReassignUser:
+      type: object
+      properties:
+        case_id:
+          type: string
+        comment:
+          type: string
+        unassigned_user:
+          type: boolean
+
+    payload-ReleaseCase:
+      type: object
+      properties:
+        case_id:
+          type: string
+        comment:
+          type: string
+        reason:
+          type: string
+
+    payload-SendLink:
+      type: object
+      properties:
+        case_id:
+          type: string
+        link_type:
+          type: string
+        sms_method:
+          type: boolean
+        email_method:
+          type: boolean
+        details:
+          type: string
+        mobile_number:
+          type: string
+        email:
+          type: string
+        status:
+          type: string
+
+    payload-UpdateCase:
+      type: object
+      properties:
+        case_id:
+          type: string
+        action:
+          type: string
+        comment:
+          type: string
+        reason:
+          type: string
+        case_status:
+          type: string
+        follow_up_date_time:
+          type: string
+          format: date-time
+
+
+
+
+
+
+#--------------------------------------------------------------------------------------------------
+    successResponse-AssginUser:
+      type: object
+      properties:
+        businessStatusCode:
+          type: number
+        httpResponseCode:
+          type: number
+        message:
+          type: string 
+
+    successResponse-FetchActionAndReasons:
+      type: object
+      properties:
+        actions:
+          type: object
+          properties:
+            Reassign Role:
+              type: object
+              properties:
+                Reason:
+                  type: array
+                  items:
+                    type: string
+                ReassignToRole:
+                  type: array
+                  items:
+                    type: string
+        businessStatusCode:
+          type: integer
+        httpResponseCode:
+          type: integer 
+
+    successResponse-FetchLeadDetails:
+      type: object
+      properties:
+        activityLog:
+          type: array
+          items:
+            type: object
+            properties:
+              RecordId:
+                type: string
+              CaseId:
+                type: string
+              CreatedBy: 
+                type: string
+              Action: 
+                type: string
+              Reason: 
+                type: string
+              Comments: 
+                type: string
+              TimeStamp: 
+                type: string
+              ChangeDetails:
+                type: string
+              IpDetails:
+                type: string
+        businessStatusCode:
+          type: integer
+        buttons:
+          type: array
+          items:
+            type: object
+            properties:
+              resource_id:
+                type: string
+              status:
+                type: string
+              alias:
+                type: string
+              resource_action_group:
+                type: string
+        callGuideData:
+          type: array
+          items:
+            type: object
+            properties:
+              SystemUserCallGuideId:
+                type: string
+              CallGuideName:
+                type: string
+              CallGuideDescription:
+                  type: string
+              RoleId: 
+                type: string
+              AssociatedEntityType: 
+                type: string
+              AssociatedEntityStatus:
+                type: string
+              CallLinkDetails: 
+                type: string
+              Status: 
+                type: string
+              EffectiveFromDate: 
+                type: string
+              EffectiveToDate: 
+                type: string
+              PendingStatus: 
+                type: string
+        caseDetails:
+          type: array
+          items:
+            type: object
+            properties:
+              CaseId: 
+                type: string
+              BranchCode: 
+                type: string
+              CreationDateAndTime: 
+                type: string
+              CaseTriggerType: 
+                type: string
+              AssociatedEntityId: 
+                type: string
+              AssociatedEntityType: 
+                type: string
+              CaseStatus: 
+                type: string
+              AssociatedEntityStatus: 
+                type: string
+              CaseStatusDescription: 
+                type: string
+              UpdatedDateAndTime: 
+                type: string
+              FollowupDateTime: 
+                type: string
+              AdditionalInfo: 
+                type: string
+              AssignedToRole: 
+                type: string
+              AssignedToUserId: 
+                type: string
+              AssignedToUserName: 
+                type: string
+              ShowOnDashboard: 
+                type: string
+              AttachmentType: 
+                type: string
+              Attachment: 
+                type: string
+              LenderId: 
+                type: string
+              ClusterCode: 
+                type: string
+              AreaCode: 
+                type: string
+              RegionCode: 
+                type: string
+              AssociatedBranchCode: 
+                type: string
+              AssociatedRegionCode: 
+                type: string
+              AssociatedClusterCode: 
+                type: string
+              AssociatedAreaCode: 
+                type: string
+              AssociatedLenderId: 
+                type: string
+        httpResponseCode: 
+          type: integer
+        notificationDetails:
+          type: array
+          items:
+            type: object
+            properties:
+              NotificationId: 
+                type: string
+              NotificationTriggerType: 
+                type: string
+              CreationDateAndTime: 
+                type: string
+              AssociatedEntityType: 
+                type: string
+              AssociatedEntityId: 
+                type: string
+              AssociatedEntityStatus: 
+                type: string
+              ModeOfCommunication: 
+                type: string
+              NotificationContent: 
+                type: string
+              NotificationStatus: 
+                type: string
+              NotificationDescription: 
+                type: string
+              NotificationSentTo: 
+                type: string
+              NotificationShortName:
+                type: string
+        userDetails:
+          type: array
+          items:
+            type: object
+            properties:
+              LeadId: 
+                type: string
+              CreationDateAndTime: 
+                type: string
+              UpdatedDateAndTime: 
+                type: string
+              PAN: 
+                type: string
+              Mobile: 
+                type: string
+              Status:
+                type: string
+              Description: 
+                type: string
+        workingStatus:
+          type: string
+
+    successResponse-FetchLoanApplication:
+      type: object
+      properties:
+        activityLog:
+          type: array
+          items:
+            type: object
+            properties:
+              recordId:
+                type: string
+              caseId:
+                type: string
+              createdBy:
+                type: string
+              action:
+                type: string
+              reason:
+                type: string
+              comments:
+                type: string
+              timeStamp:
+                type: string
+                format: date-time
+              changeDetails:
+                type: object
+              ipDetails:
+                type: object
+        businessStatusCode:
+          type: integer
+        buttons:
+          type: array
+          items:
+            type: object
+            properties:
+              resourceId:
+                type: integer
+              status:
+                type: string
+              alias:
+                type: string
+              resourceActionGroup:
+                type: string
+        callGuideData:
+          type: array
+          items:
+            type: object
+            properties:
+              systemUserCallGuideId:
+                type: string
+              callGuideName:
+                type: string
+              callGuideDescription:
+                type: string
+              roleId:
+                type: string
+              associatedEntityType:
+                type: string
+              associatedEntityStatus:
+                type: string
+              callLinkDetails:
+                type: string
+              status:
+                type: string
+              effectiveFromDate:
+                type: string
+                format: date-time
+              effectiveToDate:
+                type: string
+                format: date-time
+              pendingStatus:
+                type: object
+        caseDetails:
+          type: array
+          items:
+            type: object
+            properties:
+              caseId:
+                type: string
+              branchCode:
+                type: string
+              creationDateAndTime:
+                type: string
+                format: date-time
+              caseTriggerType:
+                type: string
+              associatedEntityId:
+                type: string
+              associatedEntityType:
+                type: string
+              caseStatus:
+                type: string
+              associatedEntityStatus:
+                type: string
+              caseStatusDescription:
+                type: string
+              updatedDateAndTime:
+                type: string
+                format: date-time
+              followupDateTime:
+                type: string
+                format: date-time
+              additionalInfo:
+                type: object
+              assignedToRole:
+                type: string
+              assignedToUserId:
+                type: string
+              assignedToUserName:
+                type: string
+              showOnDashboard:
+                type: boolean
+              attachmentType:
+                type: string
+              attachment:
+                type: string
+              lenderId:
+                type: string
+              clusterCode:
+                type: string
+              areaCode:
+                type: string
+              regionCode:
+                type: string
+              associatedBranchCode:
+                type: string
+              associatedRegionCode:
+                type: string
+              associatedClusterCode:
+                type: string
+              associatedAreaCode:
+                type: string
+              associatedLenderId:
+                type: string
+              loanAmount:
+                type: string
+              loanType:
+                type: string
+              loanSubType:
+                type: object
+              loanTenure:
+                type: integer
+              loanappidExternal:
+                type: string
+              mobile:
+                type: string
+              pan:
+                type: string
+              emailId:
+                type: string
+        httpResponseCode:
+          type: integer
+        notificationDetails:
+          type: array
+          items:
+            type: object
+            properties:
+              notificationId:
+                type: string
+              notificationTriggerType:
+                type: string
+              creationDateAndTime:
+                type: string
+                format: date-time
+              associatedEntityType:
+                type: string
+              associatedEntityId:
+                type: string
+              associatedEntityStatus:
+                type: string
+              modeOfCommunication:
+                type: string
+              notificationContent:
+                type: string
+              notificationStatus:
+                type: string
+              notificationDescription:
+                type: string
+              notificationSentTo:
+                type: string
+              notificationShortName:
+                type: string
+
+    successResponse-FetchSystemUserIdGeneric:
+      type: object
+      properties:
+        businessStatusCode:
+          type: integer
+        httpResponseCode:
+          type: integer
+        userIdList:
+          type: array
+          items:
+            type: object
+            properties:
+              systemUserId:
+                type: string
+              systemUserName:
+                type: string
+
+    successResponse-RoleReassign:
+      type: object
+      properties:
+        businessStatusCode:
+          type: integer
+        httpResponseCode:
+          type: integer
+        message:
+          type: string
+
+    successResponse-ReassignUser:
+      type: object
+      properties:
+        businessStatusCode:
+          type: integer
+        httpResponseCode:
+          type: integer
+        message:
+          type: string
+
+    successResponse-ReleaseCase:
+      type: object
+      properties:
+        businessStatusCode:
+          type: integer
+        httpResponseCode:
+          type: integer
+        message:
+          type: string
+
+    successResponse-SendLink:
+      type: object
+      properties:
+        businessStatusCode:
+          type: integer
+        email_response:
+          type: string
+        httpResponseCode:
+          type: integer
+        sms_response:
+          type: string
+
+    successResponse-UpdateCase:
+      type: object
+      properties:
+        businessStatusCode:
+          type: integer
+        httpResponseCode:
+          type: integer
+        message:
+          type: string
+
+
+    TechnicalError:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string      
+          
+          
+          
+
