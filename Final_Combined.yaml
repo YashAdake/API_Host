@@ -2486,9 +2486,18 @@ paths:
             examples:
               If Unassigned User Is True:
                   value:
+                    case_id: e8ebc63e-da6e-480e-91e7-ac2c7678fc60
+                    comment: comment
+                    unassigned_user: true
+
 
               If Unassigned User Is False:
                   value:
+                    case_id: e8ebc63e-da6e-480e-91e7-ac2c7678fc60
+                    comment: comment
+                    user_id: '1001'
+                    unassigned_user: false
+
 
       responses:
         '200':
