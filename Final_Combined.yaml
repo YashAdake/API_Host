@@ -2561,11 +2561,19 @@ paths:
             schema:
               $ref: '#/components/schemas/payload-ReleaseCase'
             examples:
-              example1:
+              User Lead:
                 value:
                   case_id: "e8ebc63e-da6e-480e-91e7-ac2c7678fc60"
                   reason: "release case"
                   comment: "comment"
+                  entity_type: "user_lead"
+
+              Loan Application:
+                value:
+                  case_id: "e8ebc63e-da6e-480e-91e7-ac2c7678fc60"
+                  reason: "release case"
+                  comment: "comment"
+                  entity_type: "loan_application"
 
 
       responses:
@@ -2625,7 +2633,7 @@ paths:
             schema:
               $ref: '#/components/schemas/payload-SendLink'
             examples:
-              example1:
+              User Lead:
                 value:
                   case_id: "e8ebc63e-da6e-480e-91e7-ac2c7678fc60"
                   link_type: "Loan Offer"
@@ -2635,6 +2643,19 @@ paths:
                   mobile_number: "7517513488"
                   email: "shubham.n@arthavedh.com"
                   status: "REGISTRATION_PENDING"
+                  entity_type: user_lead
+
+              Loan Application:
+                value:
+                  case_id: "e8ebc63e-da6e-480e-91e7-ac2c7678fc60"
+                  link_type: "Loan Offer"
+                  sms_method: "true"
+                  email_method: "true"
+                  details: "COUPON-123"
+                  mobile_number: "7517513488"
+                  email: "shubham.n@arthavedh.com"
+                  status: "REGISTRATION_PENDING"
+                  entity_type: loan_application
 
       responses:
         '200':
@@ -2694,7 +2715,7 @@ paths:
             schema:
               $ref: '#/components/schemas/payload-UpdateCase'
             examples:
-              example1:
+              User Lead:
                 value:
                   case_id: "e8ebc63e-da6e-480e-91e7-ac2c7678fc60"
                   action: "Follow-up"
@@ -2702,6 +2723,17 @@ paths:
                   reason: "Need to work on other case"
                   case_status: "REGISTRATION_PENDING"
                   follow_up_date_time: "02/02/2023"
+                  entity_type: user_lead
+
+              Loan Application:
+                value:
+                  case_id: "e8ebc63e-da6e-480e-91e7-ac2c7678fc60"
+                  action: "Follow-up"
+                  comment: "NA"
+                  reason: "Need to work on other case"
+                  case_status: "REGISTRATION_PENDING"
+                  follow_up_date_time: "02/02/2023"
+                  entity_type: loan_application
                   
 
       responses:
@@ -4034,6 +4066,8 @@ components:
           type: string
         reason:
           type: string
+        entity_type:
+          type: string
 
     payload-SendLink:
       type: object
@@ -4054,6 +4088,8 @@ components:
           type: string
         status:
           type: string
+        entity_type:
+          type: string
 
     payload-UpdateCase:
       type: object
@@ -4071,6 +4107,8 @@ components:
         follow_up_date_time:
           type: string
           format: date-time
+        entity_type:
+          type: string
 
 
 
