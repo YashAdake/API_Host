@@ -931,16 +931,25 @@ paths:
         - Claim-Case
       summary: "For claiming case"
       description: "It is used claim case"
+
       requestBody:
+        description: Common payload for User Lead and Loan Application
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                case_id:
-                  type: string
-                  example: e8ebc63e-da6e-480e-91e7-ac2c7678fc78
+               $ref: '#/components/schemas/Payload-CaseClaim' 
+
+            examples:
+              User Lead:
+                value:
+                  case_id: e8ebc63e-da6e-480e-91e7-ac2c7678fc78
+                  entity_type: user_lead
+
+              Loan Application:
+                value:
+                  case_id: e8ebc63e-da6e-480e-91e7-ac2c7678fc78
+                  entity_type: loan_application
       
       responses:
         '200':
@@ -3090,8 +3099,16 @@ components:
           description: Number of total cases
         totalPages:        
           type: integer
-          description: Number of total pages      
-          
+          description: Number of total pages    
+
+    Payload-CaseClaim:
+      description: Commmon payload for User Lead and Loan Application      
+      type: object
+      properties:
+        case_id:
+          type: string
+        entity_type:
+          type: string
     
     CaseClaimedUnsuccsessful:
       description:  User Can't claim this case If other user is already working 
