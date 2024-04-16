@@ -55,6 +55,10 @@ tags:
     description: To Send Link
   - name: Update case
     description: To Update case
+  - name: Fetch Data Generic
+    description: To fetch data generic API
+  - name: Fetch Role Resource
+    description: To fetch Role Resource API
   
 
 paths:
@@ -1000,8 +1004,6 @@ paths:
                     message: Case Claimed Successfully!
 
               
-
-      
         '400':
           description: Bad request error
           content:
@@ -2782,7 +2784,198 @@ paths:
               example:
                 error: 500
                 message: internal server error
-  
+                
+  /ops/ref-data/fetch-data:
+    post:
+      description: Fetch Data Generic APIs
+      tags:
+        - Fetch Data Generic
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref:
+                  '#/components/schemas/payload-FetchDataGeneric'
+            examples:
+              example1:
+                value:
+                  parameter:
+                    - columnName: lender_id
+                      condition: =
+                      value: L1
+                  columns:
+                    - region_description
+                    - region_id
+                  entity_type: region
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse-FetchDataGeneric'
+              examples:
+                example1:
+                  value:
+                    businessStatusCode: 2
+                    httpResponseCode: 200
+                    entity_type: region
+                    list:
+                      - region_id: R1
+                        region_description: REGION
+                      - region_id: R2
+                        region_description: REGION
+
+
+        '400':
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 400
+                message: "bad request"
+        '401':
+          description: Unauthorized error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 401
+                message: "unauthorized user"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 500
+                message: internal server error  
+
+  /ops/resource-association:
+    get:
+      description: Fetch Role Resource API
+      tags:
+        - Fetch Role Resource
+      
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse-FetchRoleResourse'
+              examples:
+                example1:
+                  value:
+                    businessStatusCode: 2
+                    httpResponseCode: 200
+                    resourceAssociationData:
+                      View:
+                        - area
+                        - cluster
+                        - branch
+                        - region
+                      Create:
+                        - area
+                        - cluster
+                      Update:
+                        - area
+                        - cluster
+                      Verify:
+                        - area
+                        - cluster
+                      Download:
+                        - area
+                        - cluster
+                      Claim_Case:
+                        - user_lead
+                        - loan_application
+                      Release_Case:
+                        - user_lead
+                        - loan_application
+                      Send_Link:
+                        - user_lead
+                        - loan_application
+                      Verify_Document:
+                        - user_lead
+                        - loan_application
+                      Upload_Document:
+                        - user_lead
+                        - loan_application
+                      View_Application:
+                        - user_lead
+                        - loan_application
+                      Assign_User:
+                        - user_lead
+                        - loan_application
+                      Reassign_User:
+                        - user_lead
+                        - loan_application
+                      Reassign_Role:
+                        - user_lead
+                        - loan_application
+                      Create_Case:
+                        - user_lead
+                        - loan_application
+                      Update_Case:
+                        - user_lead
+                        - loan_application
+                      View_Case:
+                        - user_lead
+                        - loan_application
+
+             
+
+        '400':
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 400
+                message: "bad request"
+        '401':
+          description: Unauthorized error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 401
+                message: "unauthorized user"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/TechnicalError'
+              example:
+                error: 500
+                message: internal server error
+
+
+
+
+
+
+
+
+
+
+
+
+
 #--------------------------------------------------------------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------------------------------------------------------------
@@ -4110,8 +4303,35 @@ components:
         entity_type:
           type: string
 
+    payload-FetchDataGeneric:
+      type: object
+      properties:
+        parameter:
+          type: array
+          items:
+            type: object
+            properties:
+              columnName: 
+                type: string
+                example: <COLUMN_NAME>
+              condition:
+                type: string
+                example: <Condition>
+              value:
+                type: string
+                example: <COLUMN_VALUE>
+        columns:
+          type: array
+          items:
+            type: string
+            example: <COLUMNS_LIST>
+        entity_type:
+          type: string
+          example: <TABLE_NAME>
 
+    
 
+          
 
 
 
@@ -4578,6 +4798,111 @@ components:
           type: integer
         message:
           type: string
+
+    successResponse-FetchDataGeneric:
+      type: object
+      properties: 
+        businessStatusCode:
+          type: integer
+          example: 2
+        httpResponseCode:
+          type: integer
+          example: 200
+        entity_type:
+          type: string
+          example: region
+        list:
+          type: array
+          items:
+            type: object
+            properties:
+              region_id:
+                type: string
+                example: R1
+              region_description:
+                type: string
+                example: REGION
+
+    successResponse-FetchRoleResourse:
+      type: object
+      properties:
+        businessStatusCode:
+          type: integer
+          example: 2
+        httpResponseCode:
+          type: integer
+          example: 200
+        resourceAssociationData:
+          type: object
+          properties:
+            View:
+              type: array
+              items:
+                type: string
+            Create:
+              type: array
+              items:
+                type: string
+            Update:
+              type: array
+              items:
+                type: string
+            Verify:
+              type: array
+              items:
+                type: string
+            Download:
+              type: array
+              items:
+                type: string
+            Claim_Case:
+              type: array
+              items:
+                type: string
+            Release_Case:
+              type: array
+              items:
+                type: string
+            Send_Link:
+              type: array
+              items:
+                type: string
+            Verify_Document:
+              type: array
+              items:
+                type: string
+            Upload_Document:
+              type: array
+              items:
+                type: string
+            View_Application:
+              type: array
+              items:
+                type: string
+            Assign_User:
+              type: array
+              items:
+                type: string
+            Reassign_User:
+              type: array
+              items:
+                type: string
+            Reassign_Role:
+              type: array
+              items:
+                type: string
+            Create_Case:
+              type: array
+              items:
+                type: string
+            Update_Case:
+              type: array
+              items:
+                type: string
+            View_Case:
+              type: array
+              items:
+                type: string
 
 
     TechnicalError:
