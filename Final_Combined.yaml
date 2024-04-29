@@ -194,18 +194,18 @@ paths:
                 message: "internal server error"
                 
                 
-  /ops/ref-data/menu-submenu-accsess:
+  /ops/ref-data/menu-submenu-access:
     get:
       tags:
         - Menu Sub-Menu Access API
-      description: To get menu submenu accsess
+      description: To get menu submenu access
       responses:
         '200':
-          description: successful Menu Submenu Accsess
+          description: successful Menu Submenu Access
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/successResponse-menuSubmenuAccsess'
+                $ref: '#/components/schemas/successResponse-menuSubmenuAccess'
               examples:
                 successfulMenuSubmenuAccsess:
                   value:
@@ -3030,7 +3030,7 @@ components:
         httpResponseCode:
           type: integer
           
-    successResponse-menuSubmenuAccsess:
+    successResponse-menuSubmenuAccess:
       type: object
       properties:
         businessStatusCode:
